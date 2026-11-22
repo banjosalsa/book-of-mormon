@@ -189,7 +189,7 @@ ERAS = [
          ("Morianton's people head north and are stopped at the narrow pass", ['ALMA 50:29','ALMA 50:34']),
          ("Amalickiah takes the coastal cities and is stopped at Bountiful", ['ALMA 51:23','ALMA 51:26','ALMA 51:28','ALMA 51:32']),
          ("In the south-west, Manti, Zeezrom, Cumeni and Antiparah are lost, then retaken by Helaman", ['ALMA 56:14','ALMA 58:28','ALMA 58:31']),
-         ("Nephihah: listed as taken in 51:26, yet still Nephite until it falls in Alma 59 (see tension X7)", ['ALMA 51:25','ALMA 51:26','ALMA 59:11']),
+         ("Nephihah: 51:25 says Amalickiah avoided it, 51:26 lists it as taken, yet it holds refugees and stays Nephite until Alma 59 (see tension X7)", ['ALMA 51:25','ALMA 51:26','ALMA 59:5','ALMA 59:9','ALMA 59:11']),
          ("Moroni goes from Gideon down to Zarahemla, then to Nephihah, Lehi and the land of Moroni", ['ALMA 62:7','ALMA 62:18','ALMA 62:30','ALMA 62:32'])],
   paths=[dict(nodes=['moroni_c','lehi_c','morianton','omner','gid','mulek_c','bountiful'], label="Amalickiah's sweep", refs=['ALMA 51:23','ALMA 51:26','ALMA 51:28']),
          dict(nodes=['morianton','desolation'], label="Morianton's flight", refs=['ALMA 50:33','ALMA 50:34']),
