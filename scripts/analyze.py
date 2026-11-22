@@ -187,7 +187,7 @@ PAT = {
  'bountiful': r"(?:land|city) (?:of )?Bountiful|land Bountiful|borders of Bountiful", 'desolation': r"(?:land|city) (?:of )?Desolation|land Desolation|city Desolation", 'neck': r"narrow (?:neck|pass|passage)",
  'hagoth': r"Hagoth", 'land_south': r"land southward|south countr|land south\b|southward", 'land_north': r"land northward|north countr|land north\b|northernmost|northward",
  'many_waters': r"many waters|large bodies of water|many rivers",
- 'antum': r"\bAntum\b", 'jordan': r"city of Jordan", 'shim': r"hill (?:of )?Shim|hill Shim|hill which shall be called Shim", 'jashon': r"Jashon", 'shem': r"(?:land|city) (?:which was called |of )?Shem\b|land Shem", 'angola': r"Angola",
+ 'jacobugath': r"Jacobugath", 'antum': r"\bAntum\b", 'jordan': r"city of Jordan", 'shim': r"hill (?:of )?Shim|hill Shim|hill which shall be called Shim", 'jashon': r"Jashon", 'shem': r"(?:land|city) (?:which was called |of )?Shem\b|land Shem", 'angola': r"Angola",
  'david': r"land of David", 'joshua': r"land of Joshua", 'teancum_c': r"city (?:of )?Teancum|city Teancum", 'boaz': r"city Boaz", 'cumorah': r"Cumorah|hill Ramah",
  'nimrod': r"valley (?:of )?Nimrod|valley Nimrod", 'moriancumer': r"Moriancumer", 'moron': r"land of Moron", 'ablom': r"Ablom", 'ripliancum': r"Ripliancum", 'ogath': r"Ogath",
  'corihor': r"land of Corihor|valley of Corihor", 'shurr': r"valley of Shurr", 'comnor': r"hill Comnor", 'agosh': r"Agosh",
@@ -248,6 +248,58 @@ for nid, lst in index.items():
     idx_out[nid] = [[k, ''.join(t[0] for t in tg)] for k, tg in lst]
     ev.update(k for k, _ in lst)
 
+
+DIR_REL = {'N', 'S', 'E', 'W'}
+# ---------- schematic map ----------
+specm = importlib.util.spec_from_file_location('m', 'scripts/map_data.py')
+MD = importlib.util.module_from_spec(specm); specm.loader.exec_module(MD)
+missing_pos = [n for n in nodes if n not in MD.POS]
+marked = {i for v in MD.MARK.values() for i in v}
+print("map: nodes without position", missing_pos, "| unmarked", [n for n in nodes if n not in marked], "| unknown marks", [i for i in marked if i not in nodes])
+def inside(pt, poly):
+    x, y = pt; c = False
+    for i in range(len(poly)):
+        x1, y1 = poly[i]; x2, y2 = poly[(i + 1) % len(poly)]
+        if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1: c = not c
+    return c
+outside = [n for n, p in MD.POS.items() if p[0] >= 0 and not inside(p, MD.COAST) and n not in ('east_sea', 'west_sea')]
+print("map: land places outside coastline", outside)
+mviol = []
+for a, rel, b, n, vs, note, st in g.RELS:
+    if rel not in DIR_REL: continue
+    if a not in MD.POS or b not in MD.POS: continue
+    (ax, ay), (bx, by) = MD.POS[a], MD.POS[b]
+    ok = {'N': ay < by, 'S': ay > by, 'E': ax > bx, 'W': ax < bx}[rel]
+    if not ok: mviol.append((a, rel, b))
+print("map: direction violations", mviol)
+regions_out = []
+for r in MD.REGIONS:
+    pts = []
+    for m in r['members']:
+        if isinstance(m, tuple): pts.append(list(m))
+        else:
+            assert m in MD.POS, m; pts.append(list(MD.POS[m]))
+    assert r['link'] in nodes, r['link']
+    regions_out.append(dict(id=r['id'], label=r['label'], link=r['link'], pts=pts, ids=[m for m in r['members'] if isinstance(m, str)], pad=r['pad'], wild=r.get('wild', False), lxy=r.get('lxy')))
+eras_out = []
+era_refs = set()
+for e in MD.ERAS:
+    for i in e['show']: assert i in nodes, i
+    rids = {r['id'] for r in MD.REGIONS} | {'M_north', 'M_south'}
+    for k in e['control']: assert k in rids, k
+    for t, refs in e['notes']: era_refs.update(refs)
+    for pth in e['paths']:
+        for i in pth['nodes']: assert isinstance(i, tuple) or i in nodes, i
+        era_refs.update(pth['refs'])
+    eras_out.append(dict(id=e['id'], label=e['label'], when=e['when'], show=e['show'], control=e['control'],
+                         notes=[dict(t=t, v=r) for t, r in e['notes']], paths=e['paths'], lost=e.get('lost', [])))
+for line in MD.LINES: era_refs.update(line['refs'])
+print("map: era refs missing", [r for r in era_refs if r not in VT])
+mark_of = {i: k for k, v in MD.MARK.items() for i in v}
+for n in nodes:
+    if n in MD.POS: nodes[n]['px'], nodes[n]['py'] = MD.POS[n]
+    nodes[n]['mark'] = mark_of.get(n, 'place')
+MAP = dict(violations=len(mviol), checked=sum(1 for a, rel, b, *_ in g.RELS if rel in DIR_REL and a in MD.POS and b in MD.POS), coast=MD.COAST, neck_y=MD.NECK_Y, sidon=MD.SIDON, strip=MD.STRIP, lines=MD.LINES, regions=regions_out, eras=eras_out, sides=MD.SIDES)
 TESTS_PATH = 'scripts/geo_tests.py'
 spec2 = importlib.util.spec_from_file_location('t', TESTS_PATH); t = importlib.util.module_from_spec(spec2); spec2.loader.exec_module(t)
 tests = t.build_tests(dict(ns_chain=ns_chain, ew_chain=ew_chain, cyc=cyc, nns=len(ns_all), new=len(ew_all), viol=(len(viol_ns), len(viol_ew)), n_ns_c=len(NSc), n_ew_c=len(EWc),
@@ -256,6 +308,7 @@ for tt in tests:
     for r in tt.get('verses', []): ev.add(r)
     for row in tt.get('rows', []):
         for r in row.get('v', []): ev.add(r)
+ev.update(r for r in era_refs if r in VT)
 bad = [r for r in ev if r not in VT]
 print("bad refs:", bad)
 verses = {k: VT[k] for k in sorted(ev, key=sortkey) if k in VT}
@@ -264,7 +317,7 @@ stats = dict(nodes=len(nodes), edges=len(edges), types=dict(types), verses_embed
              ns_constraints=len(ns_all), ew_constraints=len(ew_all), cycles={k: len(v) for k, v in cyc.items()},
              map_violations=dict(ns=len(viol_ns), ew=len(viol_ew)), explicit=sum(1 for e in edges if e['st'] == 'explicit'))
 out = dict(regions={k: dict(name=v[0], color=v[1]) for k, v in g.REGIONS.items()}, nodes=list(nodes.values()), edges=edges, verses=verses,
-           index=idx_out, tests=tests, stats=stats, updown=[dict(dir=d, place=p, v=vs, sense=s) for d, p, vs, s in g.UPDOWN])
+           index=idx_out, tests=tests, stats=stats, map=MAP, updown=[dict(dir=d, place=p, v=vs, sense=s) for d, p, vs, s in g.UPDOWN])
 json.dump(out, open('data/geo_out.json', 'w')); json.dump(out, open('docs/geo_out.json', 'w'))
 print(stats)
 print("tests:", [(x['id'], x['verdict']) for x in tests])

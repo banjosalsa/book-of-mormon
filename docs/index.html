@@ -12,21 +12,21 @@
   --bg:#f3f5f6; --panel:#ffffff; --ink:#18262e; --muted:#5b6b74; --line:#d5dde1;
   --accent:#1d6a87; --accent-soft:#dcecf2;
   --ok:#2c7a4b; --ok-soft:#dff0e5; --warn:#a8641a; --warn-soft:#f7e8d3; --bad:#b3372c; --bad-soft:#f6dcd9;
-  --edge:#8b9aa3; --font-display:'Newsreader',Georgia,serif; --font-body:'IBM Plex Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --edge:#8b9aa3; --land:#ece6d6; --sea:#d3e3eb; --coast:#b6aa8c; --water:#2f86ad; --journey:#8a2f9a; --nephite:#2b7a86; --lamanite:#b4571f; --jaredite:#8b6a12; --mulekite:#6d5a9e; --contested:#c98f16; --wild:#5f7d4c; --lost:#6b6b6b; --font-display:'Newsreader',Georgia,serif; --font-body:'IBM Plex Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0f1a20; --panel:#16252d; --ink:#e4edf1; --muted:#93a5af; --line:#2a3d47;
     --accent:#6cc0de; --accent-soft:#1d3a47;
     --ok:#6cc58c; --ok-soft:#1c3a29; --warn:#e0a35a; --warn-soft:#3d2d16; --bad:#ee8a7f; --bad-soft:#431f1b;
-    --edge:#6d808b; color-scheme:dark;
+    --edge:#6d808b; --land:#28322f; --sea:#0f2530; --coast:#4c5a50; --water:#5fb3d6; --journey:#d98be8; --nephite:#5cc0cc; --lamanite:#e08850; --jaredite:#d4b04a; --mulekite:#a993e0; --contested:#e6b244; --wild:#9cbf86; --lost:#9a9a9a; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0f1a20; --panel:#16252d; --ink:#e4edf1; --muted:#93a5af; --line:#2a3d47;
   --accent:#6cc0de; --accent-soft:#1d3a47;
   --ok:#6cc58c; --ok-soft:#1c3a29; --warn:#e0a35a; --warn-soft:#3d2d16; --bad:#ee8a7f; --bad-soft:#431f1b;
-  --edge:#6d808b; color-scheme:dark;
+  --edge:#6d808b; --land:#28322f; --sea:#0f2530; --coast:#4c5a50; --water:#5fb3d6; --journey:#d98be8; --nephite:#5cc0cc; --lamanite:#e08850; --jaredite:#d4b04a; --mulekite:#a993e0; --contested:#e6b244; --wild:#9cbf86; --lost:#9a9a9a; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
@@ -90,6 +90,51 @@ main{flex:1;min-height:0;position:relative}
 .loc h4{margin:10px 0 2px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .method li{margin:5px 0}
 .badge{display:inline-block;width:18px;text-align:center;font:600 10.5px var(--font-mono);color:var(--accent);margin-right:2px}
+
+.sw.sq{border-radius:3px}
+.mapc{display:flex;flex-direction:column}
+.mapc svg{flex:1;min-height:0}
+.maphint{position:absolute;left:12px;top:10px;max-width:430px;font-size:11.5px;color:var(--muted);background:color-mix(in srgb,var(--panel) 88%,transparent);padding:5px 9px;border-radius:6px;border:1px solid var(--line)}
+.timeline{flex:none;background:var(--panel);border-top:1px solid var(--line);padding:8px 16px 30px;position:relative}
+.tl-top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.tl-top>div{flex:1;min-width:0}
+.tl-top b{font-family:var(--font-display);font-size:17px}
+#tl-when{color:var(--muted);font-size:12.5px;margin-left:6px}
+.tl-arrow{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:18px;line-height:1;cursor:pointer}
+#tl{width:100%;accent-color:var(--accent);margin:0}
+.tl-stops{position:relative;height:22px;margin-top:2px}
+.tl-stop{position:absolute;transform:translateX(-50%);background:none;border:0;font:500 11.5px var(--font-body);color:var(--muted);cursor:pointer;white-space:nowrap;padding:2px 4px}
+.tl-stop:first-child{transform:none} .tl-stop:last-child{transform:translateX(-100%)}
+.tl-stop.on{color:var(--accent);font-weight:600}
+.enote{border-top:1px solid var(--line);padding:8px 0}
+.eh{margin:14px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.nb{cursor:default}
+.jsw{display:inline-block;width:22px;border-top:2.5px dashed var(--journey);flex:none}
+.chip.back{margin-bottom:10px}
+#svg-map .lbl{font:500 11px var(--font-body);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+#svg-map .lbl.small{font-size:12px;fill:var(--muted);stroke:none}
+#svg-map .lbl.land{font:italic 500 12px var(--font-display)}
+#svg-map .lbl.feat{font:italic 11px var(--font-body);fill:var(--muted)}
+#svg-map .lbl.macro{font:600 13px var(--font-body);letter-spacing:.18em;fill:var(--muted);stroke:none;opacity:.8}
+#svg-map .lbl.water{font:italic 500 12.5px var(--font-display);fill:var(--water);stroke:var(--sea);pointer-events:auto}
+#svg-map .lbl.wl{stroke:var(--land)}
+#svg-map .lbl.faint{opacity:.6;font-size:11px}
+#svg-map .lbl.rlbl{font:600 10.5px var(--font-body);letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+#svg-map .lbl.jl{font:600 11px var(--font-body);fill:var(--journey)}
+#svg-map .lostx{stroke:var(--bad);stroke-width:2.4}
+#svg-map .journey{fill:none;stroke:var(--journey);stroke-width:2.6;stroke-dasharray:9 6;animation:march 1.4s linear infinite}
+#svg-map .journey.jdash{stroke-dasharray:3 6}
+@keyframes march{to{stroke-dashoffset:-30}}
+@media (prefers-reduced-motion:reduce){#svg-map .journey{animation:none}}
+@media (max-width:640px){
+  header p{display:none} .tiles{gap:6px} .tile{min-width:0;padding:3px 8px} .tile b{font-size:16px} .tile span{font-size:9.5px}
+  #v-map.on,#v-graph.on{flex-direction:column;overflow-y:auto}
+  #v-map .canvas,#v-graph .canvas{flex:none;height:72vh}
+  #v-map .evid,#v-graph .evid{position:static;width:auto;box-shadow:none;border-left:0;border-top:1px solid var(--line);overflow:visible}
+  .maphint{display:none}
+  .tl-stop{font-size:10px;padding:2px 1px}
+  .tl-stop:not(.on){max-width:46px;overflow:hidden;text-overflow:ellipsis}
+}
 @media (max-width:900px){.evid{position:absolute;right:0;top:0;bottom:0;width:min(380px,92vw);box-shadow:-6px 0 18px rgba(0,0,0,.18)} .rail{width:170px}}
 @media (max-width:640px){.rail{display:none} header{padding:10px 16px}.tiles{margin-left:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -105,7 +150,7 @@ main{flex:1;min-height:0;position:relative}
 </header>
 <nav role="tablist" id="tabs">
   <button role="tab" aria-selected="true" data-v="graph">Mind map</button>
-  <button role="tab" aria-selected="false" data-v="map">Constraint map</button>
+  <button role="tab" aria-selected="false" data-v="map">Map &amp; timeline</button>
   <button role="tab" aria-selected="false" data-v="loc">Verses by location</button>
   <button role="tab" aria-selected="false" data-v="tests">Consistency tests</button>
   <button role="tab" aria-selected="false" data-v="about">Method</button>
@@ -119,9 +164,15 @@ main{flex:1;min-height:0;position:relative}
   </section>
   <section class="view" id="v-map">
     <aside class="rail" id="rail-map"></aside>
-    <div class="canvas"><svg id="svg-map" role="img" aria-label="Schematic map that satisfies every stated direction"></svg>
-      <div class="legend" id="legend-map"></div></div>
-    <aside class="evid" id="evid-map"><p class="hint">This layout was solved from the text's stated directions only: it satisfies every north, south, east and west statement at once. Distances are not to scale. Click a place for evidence.</p></aside>
+    <div class="canvas mapc">
+      <svg id="svg-map" role="img" aria-label="Schematic map of regions, cities, rivers and seas, with an era timeline"></svg>
+      <div class="timeline">
+        <div class="tl-top"><button type="button" class="tl-arrow" id="tl-prev" aria-label="Previous era">‹</button><div><b id="tl-title">All eras</b> <span id="tl-when"></span></div><button type="button" class="tl-arrow" id="tl-next" aria-label="Next era">›</button></div>
+        <input type="range" id="tl" min="0" max="7" step="1" value="0" aria-label="Era timeline">
+        <div class="tl-stops" id="tl-stops"></div>
+      </div>
+    </div>
+    <aside class="evid" id="evid-map"></aside>
   </section>
   <section class="view" id="v-loc"><div class="pad"><div class="wrap" id="loc-body"></div></div></section>
   <section class="view" id="v-tests"><div class="pad"><div class="wrap" id="tests-body"></div></div></section>
@@ -273,50 +324,221 @@ function applyGraphFilter(){
     .style('opacity',function(d){if(!G.sel) return 1; return (d.e.a===G.sel||d.e.b===G.sel)?1:.08;});
 }
 
-/* ---------- Constraint map ---------- */
-var M={sel:null,hide:{},regOff:{},q:''};
+/* ---------- Region map with timeline ---------- */
+var M={era:0,sel:null,q:'',layers:{regions:true,water:true,places:true,labels:true,journeys:true,arrows:false,inset:false}};
+var SIDE_VAR={nephite:'--nephite',lamanite:'--lamanite',jaredite:'--jaredite',mulekite:'--mulekite',contested:'--contested',wild:'--wild',lost:'--lost'};
+function sideFill(s){return s==='contested'?'url(#pat-contested)':'var('+SIDE_VAR[s]+')';}
+function P(id){var n=NODE[id]; return [n.px,n.py];}
+function pt(p){return typeof p==='string'?P(p):p;}
 function buildMap(){
-  var rail=document.getElementById('rail-map'); railHTML(rail,M,applyMapFilter);
-  rail.appendChild(el('h3','','Show'));
-  [['adj','Borders / near'],['dir','Direction arrows'],['ow','Old World inset']].forEach(function(t){
-    var r=el('label','row','<input type="checkbox" '+(t[0]==='ow'?'':'checked')+'>'+esc(t[1])); r.querySelector('input').addEventListener('change',function(ev){ if(t[0]==='ow'){M.ow=ev.target.checked;} else {M.hide[t[0]]=!ev.target.checked;} applyMapFilter();}); rail.appendChild(r);
+  var MP=D.map;
+  var rail=document.getElementById('rail-map'); rail.innerHTML='';
+  rail.appendChild(el('h3','','Find'));
+  var inp=el('input'); inp.type='search'; inp.id='q-map'; inp.placeholder='Search places…'; inp.setAttribute('aria-label','Search places');
+  inp.addEventListener('input',function(){M.q=inp.value.toLowerCase(); paintMap(false);}); rail.appendChild(inp);
+  rail.appendChild(el('h3','','Layers'));
+  [['regions','Regions'],['water','Rivers, seas, strip & neck'],['places','Cities & places'],['labels','Labels'],['journeys','Journeys (per era)'],['arrows','Stated directions (arrows)'],['inset','Old World inset']].forEach(function(t){
+    var r=el('label','row','<input type="checkbox" id="lay-'+t[0]+'" '+(M.layers[t[0]]?'checked':'')+'>'+esc(t[1]));
+    r.querySelector('input').addEventListener('change',function(ev){M.layers[t[0]]=ev.target.checked; paintMap(true);}); rail.appendChild(r);
   });
-  M.hide.adj=false;
-  var svg=d3.select('#svg-map'); svg.attr('viewBox','0 0 1000 760').attr('preserveAspectRatio','xMidYMid meet');
-  svg.append('defs').html('<marker id="mar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>');
+  rail.appendChild(el('h3','','Who holds the land'));
+  Object.keys(MP.sides).forEach(function(k){
+    var bg=k==='contested'?'repeating-linear-gradient(45deg,var(--contested) 0 3px,transparent 3px 6px)':'var('+SIDE_VAR[k]+')';
+    rail.appendChild(el('div','row','<i class="sw sq" style="background:'+bg+'"></i>'+esc(MP.sides[k])));
+  });
+  rail.appendChild(el('p','hint','Colors by holder when an era is picked. In "All eras", regions use their group color.'));
+  rail.appendChild(el('h3','','Markers'));
+  rail.appendChild(el('div','hint','<svg width="150" height="62" aria-hidden="true" style="color:var(--ink)"><circle cx="8" cy="9" r="5.5" fill="currentColor"/><text x="20" y="13" font-size="12" fill="currentColor">city</text><path d="M78 3.5L83.5 13.5H72.5Z" fill="currentColor"/><text x="90" y="13" font-size="12" fill="currentColor">hill</text><path d="M3 26L8 34L13 26" fill="none" stroke="currentColor" stroke-width="2"/><text x="20" y="34" font-size="12" fill="currentColor">valley</text><rect x="74" y="25" width="8" height="8" fill="currentColor"/><text x="90" y="34" font-size="12" fill="currentColor">place</text><text x="3" y="55" font-size="12" font-style="italic" fill="currentColor">Land name</text></svg>'));
+
+  var svg=d3.select('#svg-map'); M.svg=svg;
+  svg.attr('viewBox','0 10 1000 1190').attr('preserveAspectRatio','xMidYMid meet');
+  svg.append('defs').html(
+    '<pattern id="pat-contested" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" style="fill:var(--contested);fill-opacity:.22"/><rect width="4" height="9" style="fill:var(--contested);fill-opacity:.7"/></pattern>'+
+    '<pattern id="pat-wild" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="1.3" height="7" style="fill:var(--wild);fill-opacity:.55"/></pattern>'+
+    '<linearGradient id="sidon-fade" x1="0" y1="1" x2="0" y2="0"><stop offset="0" style="stop-color:var(--water)"/><stop offset=".78" style="stop-color:var(--water)"/><stop offset="1" style="stop-color:var(--water);stop-opacity:0"/></linearGradient>'+
+    '<marker id="jarw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--journey)"/></marker>'+
+    '<marker id="darw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>'+
+    '<clipPath id="landclip"><path id="landclip-p"/></clipPath>');
   var root=svg.append('g'); M.root=root;
-  svg.call(d3.zoom().scaleExtent([0.6,5]).on('zoom',function(ev){root.attr('transform',ev.transform);}));
-  // compass
-  var cg=svg.append('g').attr('transform','translate(950,60)').style('color','var(--muted)');
-  cg.append('path').attr('d','M0 -30 L7 6 L0 0 L-7 6 Z').attr('fill','currentColor'); cg.append('text').attr('y',-36).attr('text-anchor','middle').attr('font-size',13).attr('fill','currentColor').text('N');
-  var vis=D.nodes.filter(function(n){return n.mx!=null;});
-  M.nodes=vis;
-  var lg=root.append('g');
-  M.links=EDGES.filter(function(e){return NODE[e.a].mx!=null&&NODE[e.b].mx!=null&&e.rel!=='tension';});
-  M.linkSel=lg.selectAll('g').data(M.links).enter().append('g').style('cursor','pointer').on('click',function(ev,e){ev.stopPropagation(); edgeEvidence(e,document.getElementById('evid-map'));});
-  M.linkSel.append('line').each(function(e){var s=d3.select(this); var a=NODE[e.a],b=NODE[e.b]; s.attr('x1',a.mx).attr('y1',a.my).attr('x2',b.mx).attr('y2',b.my); styleMapLink(s,e);});
-  M.linkSel.append('line').attr('stroke','transparent').attr('stroke-width',9).each(function(e){var a=NODE[e.a],b=NODE[e.b]; d3.select(this).attr('x1',a.mx).attr('y1',a.my).attr('x2',b.mx).attr('y2',b.my);});
-  var ng=root.append('g');
-  M.nodeSel=ng.selectAll('g').data(vis).enter().append('g').attr('transform',function(d){return 'translate('+d.mx+','+d.my+')';}).style('cursor','pointer').on('click',function(ev,d){ev.stopPropagation(); M.sel=d.id; applyMapFilter(); nodeEvidence(d.id,document.getElementById('evid-map'));});
-  M.nodeSel.append('circle').attr('r',7).attr('fill',function(d){return REG[d.region].color;}).attr('stroke',cssv('--panel')).attr('stroke-width',2);
-  M.nodeSel.append('text').attr('dy',-11).attr('text-anchor','middle').attr('font-size',11).attr('fill','currentColor').style('paint-order','stroke').attr('stroke',cssv('--panel')).attr('stroke-width',3).style('pointer-events','none').text(function(d){return d.label;});
-  document.getElementById('legend-map').innerHTML='<span>North is up. Positions satisfy all '+D.stats.ns_constraints+' north-south and '+D.stats.ew_constraints+' east-west statements ('+(D.stats.map_violations.ns+D.stats.map_violations.ew)+' violated). Places with no stated direction sit near their region.</span>';
-  applyMapFilter();
+  svg.call(d3.zoom().scaleExtent([0.6,6]).on('zoom',function(ev){root.attr('transform',ev.transform);}));
+  svg.on('click',function(ev){ if(ev.target===svg.node()||ev.target.classList.contains('sea')){M.sel=null; paintMap(false); eraPanel();} });
+  var closed=d3.line().curve(d3.curveCatmullRomClosed.alpha(.5)), open=d3.line().curve(d3.curveCatmullRom.alpha(.5));
+
+  root.append('rect').attr('class','sea').attr('x',-3000).attr('y',-2000).attr('width',7000).attr('height',5000).style('fill','var(--sea)');
+  // insets
+  var gI=root.append('g'); M.gI=gI;
+  [[40,530,'Old World (inset, not placed relative to the map)'],[590,110,'Jaredite origins (inset)']].forEach(function(b){
+    gI.append('rect').attr('x',-350).attr('y',b[0]).attr('width',335).attr('height',b[1]).attr('rx',10).style('fill','var(--land)').style('fill-opacity',.6).style('stroke','var(--coast)').style('stroke-dasharray','5 4');
+    gI.append('text').attr('class','lbl small').attr('x',-338).attr('y',b[0]+18).text(b[2]);
+  });
+  gI.append('path').attr('d','M-322 120 Q-334 260 -318 420 Q-306 500 -296 545').style('fill','none').style('stroke','var(--water)').style('stroke-width',16).style('stroke-opacity',.35).style('stroke-linecap','round');
+  gI.append('ellipse').attr('cx',-40).attr('cy',540).attr('rx',60).attr('ry',18).style('fill','var(--sea)').style('stroke','var(--water)');
+  // landmass and tints
+  var coastD=closed(MP.coast);
+  svg.select('#landclip-p').attr('d',coastD);
+  root.append('path').attr('d',coastD).style('fill','var(--land)').style('stroke','var(--coast)').style('stroke-width',1.6);
+  M.tN=root.append('rect').attr('x',0).attr('y',0).attr('width',1000).attr('height',MP.neck_y).attr('clip-path','url(#landclip)').style('fill-opacity',0).style('pointer-events','none');
+  M.tS=root.append('rect').attr('x',0).attr('y',MP.neck_y).attr('width',1000).attr('height',1200-MP.neck_y).attr('clip-path','url(#landclip)').style('fill-opacity',0).style('pointer-events','none');
+  // regions
+  function blob(r){var pts=[]; r.pts.forEach(function(p){for(var a=0;a<14;a++){pts.push([p[0]+r.pad*Math.cos(a*Math.PI/7),p[1]+r.pad*Math.sin(a*Math.PI/7)]);}}); return closed(d3.polygonHull(pts));}
+  var gR=root.append('g'); M.gR=gR;
+  M.regSel=gR.selectAll('g').data(MP.regions).enter().append('g').attr('class','reg').style('cursor','pointer')
+    .on('click',function(ev,r){ev.stopPropagation(); selectNode(r.link);});
+  M.regSel.append('path').attr('class','rfill').attr('d',blob).style('stroke-width',1.1);
+  M.regSel.filter(function(r){return r.wild;}).append('path').attr('d',blob).style('fill','url(#pat-wild)').style('pointer-events','none');
+  M.regSel.append('title').text(function(r){return r.label||NODE[r.link].label;});
+  M.regSel.filter(function(r){return !!r.lxy;})
+    .append('text').attr('class','lbl rlbl').attr('text-anchor','middle')
+    .attr('x',function(r){return r.lxy[0];}).attr('y',function(r){return r.lxy[1];})
+    .text(function(r){return r.label;});
+  // water, strip, neck, lines
+  var gW=root.append('g'); M.gW=gW;
+  var strip=gW.append('g').style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); selectNode('strip');});
+  strip.append('path').attr('d',open(MP.strip)).style('fill','none').style('stroke','var(--wild)').style('stroke-width',18).style('stroke-opacity',.3).style('stroke-linecap','round');
+  strip.append('path').attr('d',open(MP.strip)).style('fill','none').style('stroke','var(--wild)').style('stroke-width',1.2).style('stroke-dasharray','3 4');
+  var sid=gW.append('g').style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); selectNode('sidon');});
+  sid.append('path').attr('d',open(MP.sidon)).style('fill','none').style('stroke','url(#sidon-fade)').style('stroke-width',5).style('stroke-linecap','round');
+  sid.append('path').attr('d',open(MP.sidon)).style('fill','none').style('stroke','transparent').style('stroke-width',16);
+  gW.append('circle').attr('cx',P('sidon_head')[0]).attr('cy',P('sidon_head')[1]).attr('r',5).style('fill','var(--water)').style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); selectNode('sidon_head');});
+  MP.lines.forEach(function(L){
+    var g=gW.append('g').attr('class','mline');
+    g.append('path').attr('d',d3.line()(L.pts)).style('stroke','var(--ink)').style('stroke-opacity',.55).style('stroke-width',1.4).style('stroke-dasharray','6 4');
+  });
+  var lk=P('ripliancum'); gW.append('ellipse').attr('cx',lk[0]).attr('cy',lk[1]).attr('rx',46).attr('ry',18).style('fill','var(--sea)').style('stroke','var(--water)').style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); selectNode('ripliancum');});
+  gW.append('ellipse').attr('cx',525).attr('cy',195).attr('rx',135).attr('ry',85).style('fill','none').style('stroke','var(--water)').style('stroke-dasharray','2 5').style('stroke-width',1.6).style('pointer-events','none');
+  [['West sea',38,760,-90,'west_sea'],['East sea',962,760,90,'east_sea'],['sea north (Helaman 3:8)',520,26,0,null],['sea south (Helaman 3:8)',500,1188,0,null]].forEach(function(s){
+    var t=gW.append('text').attr('class','lbl water'+(s[4]?'':' faint')).attr('text-anchor','middle').attr('transform','translate('+s[1]+','+s[2]+') rotate('+s[3]+')').text(s[0]);
+    if(s[4]) t.style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); selectNode(s[4]);});
+  });
+  // stated-direction arrows
+  M.gA=root.append('g');
+  EDGES.filter(function(e){return DIR[e.rel]&&NODE[e.a].px!=null&&NODE[e.b].px!=null&&(NODE[e.a].px>=0)===(NODE[e.b].px>=0);}).forEach(function(e){
+    var a=P(e.a),b=P(e.b);
+    M.gA.append('line').attr('x1',b[0]).attr('y1',b[1]).attr('x2',a[0]).attr('y2',a[1]).style('stroke','var(--accent)').style('stroke-width',1.5).style('stroke-opacity',.75).attr('marker-end','url(#darw)').style('cursor','pointer')
+      .on('click',function(ev){ev.stopPropagation(); edgeEvidence(e,document.getElementById('evid-map'));}).append('title').text(edgeTitle(e));
+  });
+  // journeys
+  M.gJ=root.append('g');
+  // markers
+  var gM=root.append('g'); M.gM=gM;
+  var items=D.nodes.filter(function(n){return n.px!=null && ['water'].indexOf(n.mark)<0;});
+  M.mkSel=gM.selectAll('g').data(items).enter().append('g').attr('class',function(n){return 'mk mk-'+n.mark;})
+    .attr('transform',function(n){return 'translate('+n.px+','+n.py+')';}).style('cursor','pointer')
+    .on('click',function(ev,n){ev.stopPropagation(); selectNode(n.id);});
+  M.mkSel.each(function(n){
+    var g=d3.select(this);
+    if(n.mark==='city') g.append('circle').attr('class','sym').attr('r',6.5);
+    else if(n.mark==='hill') g.append('path').attr('class','sym').attr('d','M0 -7L6.5 5H-6.5Z');
+    else if(n.mark==='valley') g.append('path').attr('class','sym vline').attr('d','M-6 -4L0 5L6 -4');
+    else if(n.mark==='place') g.append('rect').attr('class','sym').attr('x',-4.5).attr('y',-4.5).attr('width',9).attr('height',9);
+    if(n.mark==='city') g.append('path').attr('class','lostx').attr('d','M-9 -9L9 9M9 -9L-9 9');
+    var cls=n.mark==='land'?'lbl land':n.mark==='feature'?'lbl feat':n.mark==='macro'?'lbl macro':'lbl';
+    var t=g.append('text').attr('class',cls).attr('text-anchor','middle').attr('dy',['city','hill','place','valley'].indexOf(n.mark)>=0?-11:4)
+      .text(n.mark==='macro'?(n.id==='land_north'?'LAND NORTHWARD · called Mulek':'LAND SOUTHWARD · called Lehi'):shortLabel(n));
+  });
+  // water-node labels (Sidon, head, lakes)
+  [['sidon',548,655,'River Sidon',-62],['sidon_head',466,925,'head of Sidon',0],['ripliancum',470,134,'Ripliancum',0],['irreantum',-40,544,'Irreantum',0],['redsea',-300,330,'Red Sea',-80],['many_waters',525,108,'many waters',0]].forEach(function(w){
+    gM.append('text').attr('class','lbl water wl').attr('data-id',w[0]).attr('text-anchor','middle')
+      .attr('transform','translate('+w[1]+','+(w[2]+(w[0]==='sidon_head'?20:0))+') rotate('+w[4]+')').text(w[3]).style('cursor','pointer')
+      .on('click',function(ev){ev.stopPropagation(); selectNode(w[0]);});
+  });
+  // region membership for city coloring
+  M.inReg={}; MP.regions.forEach(function(r){r.ids.forEach(function(i){(M.inReg[i]=M.inReg[i]||[]).push(r.id);}); (M.inReg[r.link]=M.inReg[r.link]||[]).push(r.id);});
+  rail.appendChild(el('h3','','About this map')); rail.appendChild(el('p','hint','North is up. Not to scale. Places were placed by hand so that all '+MP.checked+' stated north/south/east/west relations hold ('+MP.violations+' broken). The text gives no borders, so regions are soft areas around their places.'));
+  buildTimeline(); paintMap(false); eraPanel();
 }
-function styleMapLink(s,e){
-  var col=cssv('--edge'),da=null,op=.55,wd=1.4;
-  if(DIR[e.rel]){col=cssv('--accent'); op=.85; wd=1.8; s.attr('marker-end','url(#mar)');}
-  else if(e.rel==='in'||e.rel==='group'){da='2 3'; op=.4;}
-  else if(e.rel==='days'||e.rel==='route'){da='6 4'; col=cssv('--warn');}
-  s.attr('stroke',col).attr('stroke-opacity',op).attr('stroke-width',wd).attr('stroke-dasharray',da).style('color',col);
+function shortLabel(n){var o={nephi:'Nephi',promised:"Lehi's landing",hermounts:'Hermounts',cumorah:'Cumorah / Ramah',jar_landing:'Jaredite landing'}; if(o[n.id]) return o[n.id]; return n.label.replace(/ \(.*\)$/,'').replace(/^Land (of )?/,'').replace(/^Wilderness of /,'');}
+function buildTimeline(){
+  var eras=D.map.eras, host=document.getElementById('tl-stops'), r=document.getElementById('tl');
+  r.max=eras.length;
+  var labels=['All eras'].concat(eras.map(function(e){return e.label;}));
+  labels.forEach(function(l,i){
+    var b=el('button','tl-stop',esc(l)); b.type='button'; b.style.left='calc(9px + (100% - 18px) * '+(i/eras.length)+')';
+    b.addEventListener('click',function(){r.value=i; setEra(i);}); host.appendChild(b);
+  });
+  r.addEventListener('input',function(){setEra(+r.value);});
+  document.getElementById('tl-prev').addEventListener('click',function(){if(M.era>0){r.value=M.era-1; setEra(M.era-1);}});
+  document.getElementById('tl-next').addEventListener('click',function(){if(M.era<eras.length){r.value=M.era+1; setEra(M.era+1);}});
 }
-function applyMapFilter(){
-  var nbr={}; if(M.sel){nbr[M.sel]=1; EDGES.forEach(function(e){if(e.a===M.sel)nbr[e.b]=1; if(e.b===M.sel)nbr[e.a]=1;});}
-  M.nodeSel.style('display',function(d){if(d.region==='ow'&&!M.ow) return 'none'; return M.regOff[d.region]?'none':null;})
-    .style('opacity',function(d){if(M.sel) return nbr[d.id]?1:.2; if(M.q) return d.label.toLowerCase().indexOf(M.q)>=0?1:.2; return 1;});
-  M.nodeSel.select('circle').attr('stroke',function(d){return d.id===M.sel?cssv('--ink'):cssv('--panel');}).attr('stroke-width',function(d){return d.id===M.sel?3:2;});
-  M.linkSel.style('display',function(e){var A=NODE[e.a],B=NODE[e.b]; if((A.region==='ow'||B.region==='ow')&&!M.ow) return 'none'; if(M.regOff[A.region]||M.regOff[B.region]) return 'none'; var g=DIR[e.rel]?'dir':(e.rel==='adj'||e.rel==='in'||e.rel==='group'||e.rel==='days'||e.rel==='route'?'adj':'x'); return M.hide[g]?'none':null;})
-    .style('opacity',function(e){return M.sel?((e.a===M.sel||e.b===M.sel)?1:.08):1;});
+function setEra(i){M.era=i; M.sel=null; paintMap(true); eraPanel();}
+function eraPanel(){
+  var host=document.getElementById('evid-map'), E=M.era>0?D.map.eras[M.era-1]:null; host.innerHTML='';
+  Array.prototype.forEach.call(document.querySelectorAll('.tl-stop'),function(b,i){b.classList.toggle('on',i===M.era);});
+  document.getElementById('tl-title').textContent=E?E.label:'All eras';
+  document.getElementById('tl-when').textContent=E?E.when:'Every place at once';
+  if(!E){
+    host.innerHTML='<h2>All eras</h2><p class="sub">Every place the text locates, shown together.</p><p>Drag the timeline to see the land era by era. Each stop shows only the places named in that part of the book, colors regions by who holds them, and draws the journeys and campaigns, with the verses below.</p><p class="hint">Click any region, city or feature for its relations and verses. Toggle the stated-direction arrows in the left panel to see exactly what the map is built from.</p>';
+    return;
+  }
+  host.appendChild(el('h2','',esc(E.label)));
+  host.appendChild(el('div','sub',esc(E.when)));
+  E.notes.forEach(function(n){
+    var d=el('div','enote'); d.appendChild(el('div','',esc(n.t)));
+    var chips=el('div','');
+    n.v.forEach(function(ref){var c=el('button','chip',esc(ref)); c.type='button'; var open=null;
+      c.addEventListener('click',function(){ if(open){open.remove(); open=null; return;} open=el('div','',vhtml(ref)); d.appendChild(open);}); chips.appendChild(c);});
+    d.appendChild(chips); host.appendChild(d);
+  });
+  if(E.paths.length){
+    host.appendChild(el('h4','eh','Journeys drawn'));
+    E.paths.forEach(function(p){host.appendChild(el('div','row nb','<i class="jsw"></i>'+esc(p.label)+' <span class="hint">('+esc(p.refs.join(', '))+')</span>'));});
+  }
+}
+function selectNode(id){
+  M.sel=id; paintMap(false);
+  var host=document.getElementById('evid-map'); nodeEvidence(id,host);
+  var back=el('button','chip back','← Back to '+(M.era>0?D.map.eras[M.era-1].label:'All eras')); back.type='button';
+  back.addEventListener('click',function(){M.sel=null; paintMap(false); eraPanel();});
+  host.insertBefore(back,host.firstChild);
+}
+function paintMap(anim){
+  var E=M.era>0?D.map.eras[M.era-1]:null, show=E?new Set(E.show):null, lost=new Set(E?E.lost:[]), q=M.q, L=M.layers;
+  function T(s){return anim?s.transition().duration(650):s;}
+  var insetOn=L.inset||(E&&(E.id==='jared'||E.id==='lehi'));
+  T(M.svg).attr('viewBox',insetOn?'-360 10 1370 1190':'0 10 1000 1190');
+  M.gI.style('display',insetOn?null:'none');
+  [['north',M.tN],['south',M.tS]].forEach(function(x){var s=E&&E.control['M_'+x[0]]; x[1].style('fill',s?sideFill(s):'transparent'); T(x[1]).style('fill-opacity',s?(s==='contested'?.5:.2):0);});
+  M.gR.style('display',L.regions?null:'none');
+  M.regSel.each(function(r){
+    var g=d3.select(this), side=E?E.control[r.id]:null;
+    var vis=!E||!!side||show.has(r.link)||r.ids.some(function(i){return show.has(i);});
+    var col=E?(side?sideFill(side):'var(--muted)'):REG[NODE[r.link].region].color;
+    var match=!q||(r.label+' '+NODE[r.link].label).toLowerCase().indexOf(q)>=0;
+    var p=g.select('.rfill').style('fill',col).style('stroke',side==='contested'?'var(--contested)':col);
+    T(p).style('fill-opacity',E?(side?(side==='contested'?.85:.34):.08):.2).style('stroke-opacity',E?(side?.7:.25):.5);
+    T(g).style('opacity',(vis?1:.18)*(match?1:.25)).style('stroke-width',null);
+    p.style('stroke-width',M.sel===r.link?2.6:1.1);
+  });
+  M.gW.style('display',L.water?null:'none');
+  M.gA.style('display',L.arrows?null:'none');
+  M.svg.selectAll('.lbl').style('display',L.labels?null:'none');
+  M.mkSel.each(function(n){
+    var g=d3.select(this), vis=!E||show.has(n.id), match=!q||n.label.toLowerCase().indexOf(q)>=0||M.sel===n.id;
+    var onLayer=L.places||n.mark==='land'||n.mark==='macro'||n.mark==='feature';
+    g.style('display',(onLayer&&(n.px>=0||insetOn))?null:'none');
+    T(g).style('opacity',(vis?1:.13)*(match?1:.22));
+    var side=null; if(E){(M.inReg[n.id]||[]).forEach(function(rid){if(E.control[rid]&&!side) side=E.control[rid];});}
+    var fill=E?(side?'var('+SIDE_VAR[side]+')':'var(--ink)'):REG[n.region].color;
+    g.select('.sym').style('fill',n.mark==='valley'?'none':fill).style('stroke',n.mark==='valley'?fill:(M.sel===n.id?'var(--ink)':'var(--land)')).style('stroke-width',n.mark==='valley'?2.2:(M.sel===n.id?3:1.6));
+    g.select('.lostx').style('display',lost.has(n.id)?null:'none');
+  });
+  M.svg.selectAll('.wl').each(function(){var s=d3.select(this), id=this.getAttribute('data-id'); s.style('display',(NODE[id].px>=0||insetOn)&&L.labels?null:'none'); T(s).style('opacity',(!E||show.has(id))?1:.2);});
+  // journeys
+  M.gJ.selectAll('*').remove();
+  M.gJ.style('display',L.journeys?null:'none');
+  if(E){
+    var ln=d3.line().curve(d3.curveCatmullRom.alpha(.5));
+    E.paths.forEach(function(p){
+      var pts=p.nodes.map(pt); if(!insetOn&&pts.some(function(x){return x[0]<0;})) return;
+      var g=M.gJ.append('g').style('cursor','pointer').on('click',function(ev){ev.stopPropagation(); eraPanel();});
+      var path=g.append('path').attr('class','journey'+(p.dashed||p.sea?' jdash':'')).attr('d',ln(pts)).attr('marker-end','url(#jarw)');
+      g.append('title').text(p.label+' ('+p.refs.join(', ')+')');
+      var node=path.node(), len=node.getTotalLength(), mid=node.getPointAtLength(len/2);
+      g.append('text').attr('class','lbl jl').attr('x',mid.x).attr('y',mid.y-7).attr('text-anchor','middle').text(p.label);
+      if(anim){g.style('opacity',0).transition().delay(300).duration(500).style('opacity',1);}
+    });
+  }
+  M.gJ.selectAll('.lbl').style('display',L.labels?null:'none');
 }
 
 /* ---------- Verses by location ---------- */
@@ -374,7 +596,7 @@ function buildAbout(){
    '<li><b>Source.</b> Only the Book of Mormon text in the project was used. No outside maps, commentary or real-world locations.</li>'+
    '<li><b>Extraction.</b> A pattern pass flagged verses with direction words, borders, distances, journeys and movement near place names. I then read the flagged verses in order and curated '+s.edges+' relations among '+s.nodes+' places. '+s.explicit+' are stated outright; the rest are marked <i>inferred</i> and drawn with long dashes.</li>'+
    '<li><b>Relation types.</b> Direction (A is north, south, east or west of B), borders/near, contains, travel time, journey, listed-together, and tension. Each relation links to its verses.</li>'+
-   '<li><b>Tests.</b> Direction statements were treated as a strict ordering on two axes and checked for loops: '+s.ns_constraints+' north-south and '+s.ew_constraints+' east-west statements, no loops. A layout was then solved to satisfy all of them at once (Constraint map). Every numeric travel time in the book (eleven of them) was collected; only one pair of places gets two different numbers. The rest are cross-reference checks I wrote up by hand with the evidence attached.</li>'+
+   '<li><b>Tests.</b> Direction statements were treated as a strict ordering on two axes and checked for loops: '+s.ns_constraints+' north-south and '+s.ew_constraints+' east-west statements, no loops. The Map places every location by hand and is checked automatically so that every stated direction holds; regions have no borders in the text, so they are drawn as soft areas around their places. The timeline shows which places each era names, who holds them, and the journeys, with verses. Every numeric travel time in the book (eleven of them) was collected; only one pair of places gets two different numbers. The rest are cross-reference checks I wrote up by hand with the evidence attached.</li>'+
    '<li><b>Limits.</b> The text gives few absolute directions and very few numbers, so passing the tests means no contradiction was found, not that the geography is uniquely determined. Place lists were curated by reading, so a relation I overlooked would not be tested. The verse index lists every verse that names a place with a cue, so you can check for yourself.</li>'+
    '<li><b>Second pass.</b> A slower reread corrected three first-pass calls: the Mulekite landing (Alma 22:31 states the move south), Limhi&rsquo;s scouts (not a tension), and the Alma-route total (21 days, not 20). It added the Nephihah tension, the matching Ether/Mormon route order, the 3 Nephi destruction check and the repeated Gideon-Manti meeting.</li><li><b>Inferred relations.</b> Where a verse implies but does not state a direction (for example Minon being "above" Zarahemla toward Nephi), I marked it inferred. Remove them and no result changes: the loop test passes with explicit relations alone.</li></ol>';
 }

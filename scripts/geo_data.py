@@ -31,7 +31,7 @@ NODES = [
  ("nahom","Nahom","ow","place"),
  ("bounty_ow","Bountiful (by Irreantum)","ow","place"),
  ("irreantum","Irreantum (sea)","ow","sea"),
- ("promised","Promised land (landing)","ow","land"),
+ ("promised","Lehi's landing (first inheritance)","nephi","land"),
  # Nephi cluster
  ("nephi","Land / city of Nephi (Lehi-Nephi)","nephi","land"),
  ("shilom","Shilom","nephi","land"),
@@ -86,6 +86,7 @@ NODES = [
  ("land_south","Land southward (called Lehi)","north","land"),
  ("land_north","Land northward (called Mulek)","north","land"),
  ("many_waters","Northern land of many waters","north","feature"),
+ ("jacobugath","Jacobugath (city)","north","city"),
  ("bones_land","Land of Jaredite bones & ruins","north","land"),
  ("mulek_landing","Mulekites' first landing","north","place"),
  # Mormon-era
@@ -244,6 +245,7 @@ RELS = [
  ("cumorah","route","jordan",None,["MORMON 5:7","MORMON 6:2","MORMON 6:4"],"Flight again, then the gathering at Cumorah","explicit"),
  ("cumorah","S","ripliancum",None,["ETHER 15:8","ETHER 15:10","ETHER 15:11"],"Shiz flees 'southward' from Ripliancum to Ogath; Coriantumr camps by hill Ramah","inferred"),
  ("mormon","route","zarahemla",None,["MOSIAH 18:34","MOSIAH 23:3","MOSIAH 24:20","MOSIAH 24:25"],"Alma's people: 8 days to Helam, 1 day to the valley of Alma, 12 days to Zarahemla","explicit"),
+ ("jacobugath","in","land_north",None,["3 NEPHI 7:12","3 NEPHI 9:9"],"King Jacob's band flees 'into the northernmost part of the land'; their city Jacobugath is later burned","inferred"),
 ]
 
 # up/down usage observations (for the elevation-consistency test)

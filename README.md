@@ -4,7 +4,7 @@ A study of every direction, distance and place reference in the Book of Mormon, 
 
 ## Result
 
-- 81 places and 117 curated relations, each linked to its verses (101 stated outright, 16 marked inferred).
+- 82 places and 118 curated relations, each linked to its verses.
 - No direction loops: 22 north-south and 14 east-west statements are jointly satisfiable, and a solved layout satisfies all of them.
 - "Up" is always south and "down" always north, across about 60 verses; the Old World part keeps its own rule ("up" to Jerusalem).
 - Only eleven numeric travel times exist in the whole book; only one pair of places gets two different numbers.
@@ -22,6 +22,12 @@ The text gives few absolute directions and very few numbers, so passing means no
 - The three days in 1 Nephi 2:6 are not clearly counted from Jerusalem; marked inferred.
 - Constraint map: region anchors were inverted, so places without stated directions sat in the wrong half. Fixed.
 - Added: Manti on the southern strip by the head of the Sidon (Alma 22:27); the Ether/Mormon route order match; the 3 Nephi destruction check; the Gideon-Manti meeting told twice.
+
+## Map & timeline
+
+The map view draws lands as soft colored regions with cities as balls inside them, plus the river Sidon, the east and west seas, the narrow strip of wilderness and the narrow neck. Places are hand-placed in `scripts/map_data.py`; `analyze.py` checks that every stated north/south/east/west relation holds on the map and that every place sits on land. The text gives no borders, so regions are soft areas around their places, and nothing is to scale.
+
+A timeline with seven stops (Jaredites, Lehi & Nephi, Mosiah & Zeniff, Alma, Captain Moroni, Helaman to 3 Nephi, Mormon) shows only the places each era names, colors regions by who holds them, and draws that era's journeys, each with verses.
 
 ## Dashboard
 
