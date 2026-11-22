@@ -98,6 +98,7 @@ NODES = [
  ("joshua","Land of Joshua","mormon","land"),
  ("teancum_c","Teancum (city)","mormon","city"),
  ("boaz","Boaz (city)","mormon","city"),
+ ("jordan","Jordan (city)","mormon","city"),
  ("cumorah","Cumorah / Ramah (hill)","mormon","hill"),
  # Jaredite
  ("nimrod","Valley of Nimrod","jared","valley"),
@@ -116,8 +117,8 @@ NODES = [
 # (a, rel, b, n, [verses], note, strength)  strength: "explicit" or "inferred"
 RELS = [
  # ---------- Old World ----------
- ("lemuel_ow","adj","redsea",None,["1 NEPHI 2:5","1 NEPHI 16:14"],"Lehi traveled 'in the borders which are nearer the Red Sea'","explicit"),
- ("lemuel_ow","days","jeru_ow",3,["1 NEPHI 2:5","1 NEPHI 2:6"],"Three days in the wilderness, then a tent in a valley by a river","explicit"),
+ ("lemuel_ow","adj","redsea",None,["1 NEPHI 2:5","1 NEPHI 2:8","1 NEPHI 16:14"],"Lehi traveled 'in the borders which are nearer the Red Sea'","explicit"),
+ ("lemuel_ow","days","jeru_ow",3,["1 NEPHI 2:5","1 NEPHI 2:6"],"After coming down near the Red Sea, Lehi 'traveled three days in the wilderness' to a valley by a river. The text does not say whether the three days count from Jerusalem","inferred"),
  ("shazer","days","lemuel_ow",4,["1 NEPHI 16:13"],"Four days, 'nearly a south-southeast direction'","explicit"),
  ("shazer","S","lemuel_ow",None,["1 NEPHI 16:13"],"south-southeast: mostly south","explicit"),
  ("shazer","E","lemuel_ow",None,["1 NEPHI 16:13"],"south-southeast: partly east","explicit"),
@@ -153,7 +154,7 @@ RELS = [
  ("ammonihah","days","melek",3,["ALMA 8:6"],"Three days' journey","explicit"),
  ("noah_l","adj","ammonihah",None,["ALMA 16:3","ALMA 49:12","ALMA 49:13"],"Borders of Noah are next to Ammonihah; Lamanites at Ammonihah march next to Noah","explicit"),
  ("manti","S","gideon",None,["ALMA 17:1"],"Alma journeys 'from the land of Gideon southward, away to the land of Manti'","explicit"),
- ("manti","W","sidon",None,["ALMA 43:24","ALMA 43:32","ALMA 43:35"],"Lamanites must 'come over' / cross the Sidon to reach Manti; Nephite ambush 'on the west of the river Sidon... down into the borders of the land Manti'","inferred"),
+ ("manti","W","sidon",None,["ALMA 43:24","ALMA 43:32","ALMA 43:35","ALMA 16:6","ALMA 16:7"],"Lamanites must 'come over' and cross the Sidon to reach Manti; Moroni's ambush is 'on the west of the river Sidon... down into the borders of the land Manti'; raiders leaving from the west cross the Sidon beyond Manti","inferred"),
  ("south_wild","S","manti",None,["ALMA 16:6","ALMA 16:7"],"Sidon crossed 'in the south wilderness, away up beyond the borders of the land of Manti'","explicit"),
  ("south_wild","E","sidon",None,["ALMA 16:6","ALMA 16:7"],"'the south wilderness, which was on the east side of the river Sidon'","explicit"),
  ("minon","S","zarahemla",None,["ALMA 2:24"],"'in the land of Minon, above the land of Zarahemla, in the course of the land of Nephi'","inferred"),
@@ -182,8 +183,7 @@ RELS = [
  ("bountiful","N","mulek_c",None,["ALMA 51:26","ALMA 51:28","ALMA 52:2","ALMA 52:23","ALMA 52:27"],"Mulek is the last coastal city before 'the borders of the land Bountiful'; Teancum retreats 'down by the seashore, northward' to Bountiful","explicit"),
  ("mulek_c","adj","bountiful",None,["ALMA 52:20","ALMA 52:27"],"'the plains between the two cities'; Lamanites pursue Teancum 'near the city Bountiful'","explicit"),
  # ---------- West frontier ----------
- ("antiparah","S","judea",None,["ALMA 56:31","ALMA 56:33","ALMA 56:36"],"Helaman, based at Judea, marches near Antiparah then flees northward","inferred"),
- ("nephihah","E","sidon_head",None,["ALMA 56:25"],"'cross the head of Sidon, over to the city of Nephihah'","explicit"),
+ ("nephihah","E","sidon_head",None,["ALMA 56:25","ALMA 53:22"],"Lamanites in the south-west theater durst not 'cross the head of Sidon, over to the city of Nephihah'","inferred"),
  # ---------- Seas / continents ----------
  ("east_sea","E","west_sea",None,["ALMA 22:27","ALMA 50:8","HELAMAN 3:8"],"East sea and west sea bound the land","explicit"),
  ("west_sea","days","east_sea",1.5,["ALMA 22:32"],"The Bountiful-Desolation line 'from the east to the west sea': 'a day and a half's journey for a Nephite'","explicit"),
@@ -206,8 +206,8 @@ RELS = [
  ("bones_land","in","land_north",None,["OMNI 1:22","MOSIAH 21:26"],"'their bones lay scattered in the land northward'","explicit"),
  ("bones_land","route","nephi",None,["MOSIAH 8:8","MOSIAH 21:25","MOSIAH 21:26"],"Limhi's 43 scouts, lost in the wilderness, found the bones land and returned to Nephi","explicit"),
  ("mulek_landing","adj","desolation",None,["ALMA 22:30"],"The bones land 'was discovered by the people of Zarahemla, it being the place of their first landing'","explicit"),
+ ("mulek_landing","route","zarahemla",None,["ALMA 22:30","ALMA 22:31","OMNI 1:16"],"From their first landing in the north: 'they came from there up into the south wilderness'","explicit"),
  ("mulek_landing","in","land_north",None,["HELAMAN 6:10"],"'the Lord did bring Mulek into the land north'","explicit"),
- ("zarahemla","tension","mulek_landing",None,["OMNI 1:16","ALMA 22:30","HELAMAN 6:10"],"Omni says the Zarahemla people crossed the waters 'into the land where Mosiah discovered them; and they had dwelt there from that time forth', while Alma and Helaman put their first landing in the north","explicit"),
  # ---------- Mormon-era ----------
  ("shim","in","antum",None,["MORMON 1:3"],"'the land Antum, unto a hill which shall be called Shim'","explicit"),
  ("jashon","adj","shim",None,["MORMON 2:16","MORMON 2:17"],"'the city of Jashon was near the land where Ammaron had deposited the records'","explicit"),
@@ -234,15 +234,29 @@ RELS = [
  ("cumeni","group","manti",None,["ALMA 56:14","ALMA 57:31"],"Listed together among the cities taken by the Lamanites","inferred"),
  ("cumorah","adj","ogath",None,["ETHER 15:10","ETHER 15:11"],"After the pursuit south to Ogath, Coriantumr's army camps 'by the hill Ramah' - the same hill where Mormon hid the records (Ramah = Cumorah, see MORMON 6:6)","inferred"),
  ("cumorah","route","shim",None,["ETHER 9:3","MORMON 4:23"],"Omer passes the hill Shim and then 'the place where the Nephites were destroyed'; Mormon takes the plates from Shim, later hides them at Cumorah","inferred"),
+ # ---------- second pass ----------
+ ("manti","adj","strip",None,["ALMA 22:27"],"The strip runs 'through the borders of Manti, by the head of the river Sidon'","explicit"),
+ ("manti","adj","sidon_head",None,["ALMA 22:27","ALMA 16:6","ALMA 43:22"],"Manti sits by the head of the Sidon","explicit"),
+ ("nephihah","tension","east_sea",None,["ALMA 51:25","ALMA 51:26","ALMA 62:25"],"51:25 has Amalickiah keep his army 'down by the seashore' instead of attacking Nephihah, and 62:25 has Lamanites flee from Nephihah to Moroni 'in the borders by the seashore'; but 51:26 lists Nephihah among cities 'all of which were on the east borders by the seashore'","explicit"),
+ ("sidom","route","ammonihah",None,["ALMA 15:1"],"Alma and Amulek leave Ammonihah and come 'into the land of Sidom', where the Ammonihah exiles were","explicit"),
+ ("sidom","route","zarahemla",None,["ALMA 15:18"],"From Sidom Alma 'came over to the land of Zarahemla'","explicit"),
+ ("jordan","route","boaz",None,["MORMON 4:20","MORMON 4:22","MORMON 5:3"],"After Boaz the Nephites flee again; next named stand is the city of Jordan","explicit"),
+ ("cumorah","route","jordan",None,["MORMON 5:7","MORMON 6:2","MORMON 6:4"],"Flight again, then the gathering at Cumorah","explicit"),
+ ("cumorah","S","ripliancum",None,["ETHER 15:8","ETHER 15:10","ETHER 15:11"],"Shiz flees 'southward' from Ripliancum to Ogath; Coriantumr camps by hill Ramah","inferred"),
+ ("mormon","route","zarahemla",None,["MOSIAH 18:34","MOSIAH 23:3","MOSIAH 24:20","MOSIAH 24:25"],"Alma's people: 8 days to Helam, 1 day to the valley of Alma, 12 days to Zarahemla","explicit"),
 ]
 
 # up/down usage observations (for the elevation-consistency test)
 UPDOWN = [
  # (direction word, place, [verses], sense)
  ("up","Nephi",["MOSIAH 20:7","MOSIAH 28:5","MOSIAH 29:3","ALMA 17:8","ALMA 20:2","ALMA 24:20","ALMA 26:23","ALMA 47:1"],"Travelling toward Nephi from Zarahemla (or from the north) is always 'up'"),
- ("down","Zarahemla",["ALMA 27:5","ALMA 51:11","ALMA 53:10","ALMA 53:12","ALMA 56:25","ALMA 57:16","HELAMAN 1:17","HELAMAN 6:4"],"Travelling toward Zarahemla from the Lamanite lands (or from the west frontier) is always 'down'"),
+ ("down","Zarahemla",["ALMA 27:5","ALMA 51:11","ALMA 53:10","ALMA 53:12","ALMA 56:25","ALMA 57:16","ALMA 62:7","HELAMAN 1:17","HELAMAN 6:4"],"Travelling toward Zarahemla from the Lamanite lands (or from the west frontier) is always 'down'"),
  ("down out of","Nephi",["WORDS OF MORMON 1:13","ALMA 49:10","ALMA 56:3"],"Leaving Nephi is 'down'"),
  ("up out of","Zarahemla",["MOSIAH 7:9","ALMA 26:9"],"Leaving Zarahemla for Nephi is 'up'"),
  ("down","Desolation",["MORMON 3:7","MORMON 4:19"],"Lamanites attack Desolation from the south 'coming down'; Nephites leave it going 'up' (MORMON 4:1)"),
+ ("up","south wilderness",["ALMA 22:31","OMNI 1:27","OMNI 1:28"],"North to south is 'up': the Mulekites came 'up into the south wilderness'; settlers 'went up into the wilderness to return to the land of Nephi'"),
+ ("down","Jershon",["ALMA 27:26"],"From the southern border wilderness the Ammonites 'went down into the land of Jershon'"),
+ ("above","Minon",["ALMA 2:24"],"Minon is 'above the land of Zarahemla, in the course of the land of Nephi'"),
+ ("up/down","Jerusalem (Old World)",["1 NEPHI 3:9","1 NEPHI 4:1","1 NEPHI 4:34","1 NEPHI 5:1","1 NEPHI 2:5"],"Old World, separate test of the same habit: always 'up' to Jerusalem and 'down' into the wilderness"),
  ("down","Middoni",["ALMA 20:7"],"Middoni lies below Ishmael; Aaron/Ammon in Middoni are later reached 'up' from the Nephi side (ALMA 22:3)"),
 ]

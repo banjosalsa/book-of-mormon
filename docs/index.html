@@ -80,7 +80,7 @@ main{flex:1;min-height:0;position:relative}
 .card h3{font-size:17px}
 .card .top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
 .pill{flex:none;font:600 11px var(--font-body);padding:2px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.04em}
-.pill.consistent{background:var(--ok-soft);color:var(--ok)} .pill.minor{background:var(--warn-soft);color:var(--warn)} .pill.note{background:var(--accent-soft);color:var(--accent)}
+.pill.tension{background:var(--bad-soft);color:var(--bad)} .pill.consistent{background:var(--ok-soft);color:var(--ok)} .pill.minor{background:var(--warn-soft);color:var(--warn)} .pill.note{background:var(--accent-soft);color:var(--accent)}
 .card details{margin-top:8px} .card summary{cursor:pointer;color:var(--accent);font-weight:500}
 .card p{margin:8px 0}
 .loc{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin:0 0 8px}
@@ -152,9 +152,9 @@ fetch('geo_out.json').then(function(r){return r.json();}).then(function(d){
 
 function tiles(){
   var s=D.stats, t=document.getElementById('tiles');
-  var minor=D.tests.filter(function(x){return x.verdict==='minor tension';}).length;
+  var minor=D.tests.filter(function(x){return x.verdict==='minor tension'||x.verdict==='tension';}).length;
   var ok=D.tests.filter(function(x){return x.verdict==='consistent';}).length;
-  [['ok',s.nodes,'places'],['ok',s.edges,'relations'],['ok',ok+'/'+D.tests.length,'tests clean'],['ok',0,'direction loops'],['warn',minor,'minor tensions']].forEach(function(x){
+  [['ok',s.nodes,'places'],['ok',s.edges,'relations'],['ok',ok+'/'+D.tests.length,'tests clean'],['ok',0,'direction loops'],['warn',minor,'tensions']].forEach(function(x){
     t.appendChild(el('div','tile '+(x[0]==='warn'?'warn':''),'<b>'+x[1]+'</b><span>'+x[2]+'</span>'));});
 }
 
@@ -300,7 +300,7 @@ function buildMap(){
   M.nodeSel=ng.selectAll('g').data(vis).enter().append('g').attr('transform',function(d){return 'translate('+d.mx+','+d.my+')';}).style('cursor','pointer').on('click',function(ev,d){ev.stopPropagation(); M.sel=d.id; applyMapFilter(); nodeEvidence(d.id,document.getElementById('evid-map'));});
   M.nodeSel.append('circle').attr('r',7).attr('fill',function(d){return REG[d.region].color;}).attr('stroke',cssv('--panel')).attr('stroke-width',2);
   M.nodeSel.append('text').attr('dy',-11).attr('text-anchor','middle').attr('font-size',11).attr('fill','currentColor').style('paint-order','stroke').attr('stroke',cssv('--panel')).attr('stroke-width',3).style('pointer-events','none').text(function(d){return d.label;});
-  document.getElementById('legend-map').innerHTML='<span>North is up. Positions satisfy all '+D.stats.ns_constraints+' north-south and '+D.stats.ew_constraints+' east-west statements ('+(D.stats.map_violations.ns+D.stats.map_violations.ew)+' violated).</span>';
+  document.getElementById('legend-map').innerHTML='<span>North is up. Positions satisfy all '+D.stats.ns_constraints+' north-south and '+D.stats.ew_constraints+' east-west statements ('+(D.stats.map_violations.ns+D.stats.map_violations.ew)+' violated). Places with no stated direction sit near their region.</span>';
   applyMapFilter();
 }
 function styleMapLink(s,e){
@@ -351,12 +351,12 @@ function buildLoc(){
 function buildTests(){
   var host=document.getElementById('tests-body'); host.innerHTML='';
   host.appendChild(el('h2','','Consistency tests'));
-  var c=D.tests.filter(function(t){return t.verdict==='consistent';}).length, m=D.tests.filter(function(t){return t.verdict==='minor tension';}).length;
-  host.appendChild(el('p','', '<b>'+c+' of '+D.tests.length+'</b> tests came out consistent, <b>'+m+'</b> show a minor tension, and none is a hard contradiction. A hard contradiction would be two verses that cannot both be true of the same place; the minor ones can be reconciled but are worth knowing.'));
+  var c=D.tests.filter(function(t){return t.verdict==='consistent';}).length, m=D.tests.filter(function(t){return t.verdict==='minor tension';}).length, tn=D.tests.filter(function(t){return t.verdict==='tension';}).length, nt=D.tests.filter(function(t){return t.verdict==='note';}).length;
+  host.appendChild(el('p','', '<b>'+c+' of '+D.tests.length+'</b> tests came out consistent. <b>'+tn+'</b> is a real tension the text leaves unresolved (Nephihah), <b>'+m+'</b> is a minor numeric tension (the width of the neck), and <b>'+nt+'</b> are notes on open points. No place is put in two incompatible positions.'));
   var last='';
   D.tests.forEach(function(t){
     if(t.group!==last){host.appendChild(el('div','grp',esc(t.group))); last=t.group;}
-    var cls=t.verdict==='consistent'?'consistent':(t.verdict==='note'?'note':'minor');
+    var cls=t.verdict==='consistent'?'consistent':(t.verdict==='note'?'note':(t.verdict==='tension'?'tension':'minor'));
     var card=el('div','card');
     var top='<div class="top"><h3>'+esc(t.title)+'</h3><span class="pill '+cls+'">'+esc(t.verdict)+'</span></div><p>'+esc(t.summary)+'</p>';
     card.innerHTML=top;
@@ -374,9 +374,9 @@ function buildAbout(){
    '<li><b>Source.</b> Only the Book of Mormon text in the project was used. No outside maps, commentary or real-world locations.</li>'+
    '<li><b>Extraction.</b> A pattern pass flagged verses with direction words, borders, distances, journeys and movement near place names. I then read the flagged verses in order and curated '+s.edges+' relations among '+s.nodes+' places. '+s.explicit+' are stated outright; the rest are marked <i>inferred</i> and drawn with long dashes.</li>'+
    '<li><b>Relation types.</b> Direction (A is north, south, east or west of B), borders/near, contains, travel time, journey, listed-together, and tension. Each relation links to its verses.</li>'+
-   '<li><b>Tests.</b> Direction statements were treated as a strict ordering on two axes and checked for loops: '+s.ns_constraints+' north-south and '+s.ew_constraints+' east-west statements, no loops. A layout was then solved to satisfy all of them at once (Constraint map). Distances were checked for places given two different values; one pair was. The rest are cross-reference checks I wrote up by hand with the evidence attached.</li>'+
+   '<li><b>Tests.</b> Direction statements were treated as a strict ordering on two axes and checked for loops: '+s.ns_constraints+' north-south and '+s.ew_constraints+' east-west statements, no loops. A layout was then solved to satisfy all of them at once (Constraint map). Every numeric travel time in the book (eleven of them) was collected; only one pair of places gets two different numbers. The rest are cross-reference checks I wrote up by hand with the evidence attached.</li>'+
    '<li><b>Limits.</b> The text gives few absolute directions and very few numbers, so passing the tests means no contradiction was found, not that the geography is uniquely determined. Place lists were curated by reading, so a relation I overlooked would not be tested. The verse index lists every verse that names a place with a cue, so you can check for yourself.</li>'+
-   '<li><b>Inferred relations.</b> Where a verse implies but does not state a direction (for example Minon being "above" Zarahemla toward Nephi), I marked it inferred. Remove them and no result changes: the loop test passes with explicit relations alone.</li></ol>';
+   '<li><b>Second pass.</b> A slower reread corrected three first-pass calls: the Mulekite landing (Alma 22:31 states the move south), Limhi&rsquo;s scouts (not a tension), and the Alma-route total (21 days, not 20). It added the Nephihah tension, the matching Ether/Mormon route order, the 3 Nephi destruction check and the repeated Gideon-Manti meeting.</li><li><b>Inferred relations.</b> Where a verse implies but does not state a direction (for example Minon being "above" Zarahemla toward Nephi), I marked it inferred. Remove them and no result changes: the loop test passes with explicit relations alone.</li></ol>';
 }
 })();
 </script>

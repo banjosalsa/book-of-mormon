@@ -107,7 +107,8 @@ def layers(edges, ids):
 dy = layers([e for e in ns_all if e[0] in ids and e[1] in ids], ids)
 dx = layers([(lo, hi, *r) for hi, lo, *r in ew_all if hi in ids and lo in ids], ids)  # west -> east
 pos = {}
-reg_anchor = {'nephi': (-1.2, 1.5), 'zar': (0, 0.8), 'east': (1.6, 0.4), 'west': (-1.8, 0.3), 'north': (0, -1.2), 'mormon': (0.6, -2.4), 'jared': (-0.6, -2.8)}
+# y grows to the north
+reg_anchor = {'nephi': (-0.6, -2.4), 'zar': (-0.2, -0.7), 'east': (1.8, -0.8), 'west': (-2.0, -1.4), 'north': (0.2, 1.0), 'mormon': (0.9, 2.6), 'jared': (-0.9, 2.8)}
 for u in ids:
     ax, ay = reg_anchor[nodes[u]['region']]
     pos[u] = [ax + random.uniform(-.6, .6) + 0.25 * dx[u], ay - 0.35 * dy[u] + random.uniform(-.4, .4)]
@@ -135,6 +136,8 @@ for it in range(1500):
                 f[a][0] -= k * dxv / dist; f[a][1] -= k * dyv / dist
                 f[b][0] += k * dxv / dist; f[b][1] += k * dyv / dist
     for u in ids:
+        ax, ay = reg_anchor[nodes[u]['region']]
+        f[u][0] += 0.012 * (ax - pos[u][0]); f[u][1] += 0.012 * (ay - pos[u][1])
         pos[u][0] += f[u][0]; pos[u][1] += f[u][1]
     for _ in range(3):
         for hi, lo in NSc:
@@ -184,7 +187,7 @@ PAT = {
  'bountiful': r"(?:land|city) (?:of )?Bountiful|land Bountiful|borders of Bountiful", 'desolation': r"(?:land|city) (?:of )?Desolation|land Desolation|city Desolation", 'neck': r"narrow (?:neck|pass|passage)",
  'hagoth': r"Hagoth", 'land_south': r"land southward|south countr|land south\b|southward", 'land_north': r"land northward|north countr|land north\b|northernmost|northward",
  'many_waters': r"many waters|large bodies of water|many rivers",
- 'antum': r"\bAntum\b", 'shim': r"hill (?:of )?Shim|hill Shim|hill which shall be called Shim", 'jashon': r"Jashon", 'shem': r"(?:land|city) (?:which was called |of )?Shem\b|land Shem", 'angola': r"Angola",
+ 'antum': r"\bAntum\b", 'jordan': r"city of Jordan", 'shim': r"hill (?:of )?Shim|hill Shim|hill which shall be called Shim", 'jashon': r"Jashon", 'shem': r"(?:land|city) (?:which was called |of )?Shem\b|land Shem", 'angola': r"Angola",
  'david': r"land of David", 'joshua': r"land of Joshua", 'teancum_c': r"city (?:of )?Teancum|city Teancum", 'boaz': r"city Boaz", 'cumorah': r"Cumorah|hill Ramah",
  'nimrod': r"valley (?:of )?Nimrod|valley Nimrod", 'moriancumer': r"Moriancumer", 'moron': r"land of Moron", 'ablom': r"Ablom", 'ripliancum': r"Ripliancum", 'ogath': r"Ogath",
  'corihor': r"land of Corihor|valley of Corihor", 'shurr': r"valley of Shurr", 'comnor': r"hill Comnor", 'agosh': r"Agosh",

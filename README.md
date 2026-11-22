@@ -4,12 +4,24 @@ A study of every direction, distance and place reference in the Book of Mormon, 
 
 ## Result
 
-- 80 places and 109 curated relations, each linked to its verses (95 stated outright, 14 marked inferred).
+- 81 places and 117 curated relations, each linked to its verses (101 stated outright, 16 marked inferred).
 - No direction loops: 22 north-south and 14 east-west statements are jointly satisfiable, and a solved layout satisfies all of them.
-- 17 tests: 12 consistent, 3 minor tensions, 1 naming note, no hard contradictions.
-- Minor tensions: the neck's width (Alma 22:32 vs Helaman 4:7), where the Mulekites first landed (Omni 1:16 vs Alma 22:30 and Helaman 6:10), and what Limhi's scouts believed (Mosiah 8:8 vs 21:26).
+- "Up" is always south and "down" always north, across about 60 verses; the Old World part keeps its own rule ("up" to Jerusalem).
+- Only eleven numeric travel times exist in the whole book; only one pair of places gets two different numbers.
+- 24 tests: 18 consistent, 1 unresolved tension, 1 minor tension, 4 notes.
+  - Tension: Nephihah. Alma 51:25 says Amalickiah would not attack it, 51:26 lists it among cities he took, and Alma 59 has it still Nephite until it falls in the thirtieth year.
+  - Minor: the neck's width, a day and a half (Alma 22:32) versus a day (Helaman 4:7), possibly two different lines.
 
 The text gives few absolute directions and very few numbers, so passing means no contradiction was found, not that the geography is unique.
+
+### Second-pass corrections
+
+- Mulekite landing: no longer a tension. Alma 22:31 states the move: "they came from there up into the south wilderness".
+- Limhi's scouts (Mosiah 8:8 vs 21:26): not a tension; one verse is hindsight, the other what they believed.
+- Alma's route from Mormon to Zarahemla is 8 + 1 + 12 = 21 days, not 20.
+- The three days in 1 Nephi 2:6 are not clearly counted from Jerusalem; marked inferred.
+- Constraint map: region anchors were inverted, so places without stated directions sat in the wrong half. Fixed.
+- Added: Manti on the southern strip by the head of the Sidon (Alma 22:27); the Ether/Mormon route order match; the 3 Nephi destruction check; the Gideon-Manti meeting told twice.
 
 ## Dashboard
 

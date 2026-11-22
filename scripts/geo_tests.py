@@ -23,11 +23,13 @@ def build_tests(ctx):
     T.append(dict(
         id='D2', group='Direction', verdict='consistent',
         title='"Up" and "down" are used the same way throughout',
-        summary="Going toward Nephi is always 'up'; coming toward Zarahemla is always 'down'; leaving Nephi is 'down out of'. None of the matching verses I found reverses this.",
+        summary="Across about 60 verses, travel south (toward Nephi and the southern wilderness) is always 'up' and travel north (toward Zarahemla, Jershon, Desolation) is always 'down'. The Old World part keeps its own rule just as strictly: 'up' to Jerusalem, 'down' into the wilderness. I found no reversal.",
         detail=["I searched every motion verb followed by 'up' or 'down' and a place name. Nephi and Zarahemla are the two best-attested endpoints, and the usage never flips.",
                 "One edge case: 3 Nephi 6:25 has a complaint 'came up unto the land of Zarahemla'. The origin is not stated, so it cannot be tested.",
                 "Mosiah 7:6 has Ammon go 'down into the land of Nephi' from the hill north of Shilom. That is a local descent into the city, so it fits.",
-                "Mormon 4:1 has the Nephites go 'up' out of Desolation toward the Lamanites, while Mormon 3:7 and 4:19 have the Lamanites 'come down' on Desolation. That pattern matches the rest: the south is higher."],
+                "Mormon 4:1 has the Nephites go 'up' out of Desolation toward the Lamanites, while Mormon 3:7 and 4:19 have the Lamanites 'come down' on Desolation. That pattern matches the rest: the south is higher.",
+                "The rule holds even in side remarks: Alma 22:31 has the Mulekites come 'up into the south wilderness' from the north, Alma 27:26 has the Ammonites go 'down into the land of Jershon' from the southern border, and Alma 2:24 calls Minon 'above the land of Zarahemla, in the course of the land of Nephi'.",
+                "Untestable cases: Ether 7:5 and 14:11 have armies come 'up unto the land of Moron' without saying where from."],
         rows=[dict(label=f"{d} {pl}: {sense}", v=vs) for d, pl, vs, sense in ctx['UPDOWN']]))
 
     T.append(dict(
@@ -35,14 +37,17 @@ def build_tests(ctx):
         title='Every river-Sidon crossing puts places on the right bank',
         summary="Zarahemla, Melek and Manti are on the west bank; Gideon, Hill Amnihu, Antionum, Nephihah and the 'south wilderness' crossed by Zoram are on the east. All crossing events agree with that.",
         detail=["No place is assigned to both banks and no journey crosses the river the wrong way for its endpoints.",
-                "Alma 16:6-7 requires the Lamanite raiders to cross the Sidon from west to east on their way home beyond Manti. That fits Lamanite lands on the east side too (Alma 22:29, Alma 25:5), so it is a constraint, not a conflict."],
+                "Two independent battle accounts agree. In Alma 16 raiders leaving Ammonihah (west bank) cross the Sidon beyond Manti and are met on the east side. In Alma 43 Lamanites coming from Antionum (east) go round by the head of the Sidon and must cross the river to reach Manti. Both put Manti on the west bank near the upper river, with the Lamanites using the east-bank south wilderness.",
+                "Alma 22:27 independently puts Manti on the southern strip, 'by the head of the river Sidon', which is why Alma 17:1 travels 'southward' from Gideon to reach it.",
+                "One close-reading point: Alma 43:22 says the Lamanites went 'by the head of the river Sidon', yet in 43:35 they still have to cross it. That would be odd if 'head' meant the river's source, which they would simply walk around. But Alma 56:25 speaks of crossing 'the head of Sidon', so the text uses 'head' for the upper river region, which can be crossed. Read that way the accounts agree."],
         rows=[dict(label='Hill Amnihu is east of the Sidon, and the Nephites cross the river back to Zarahemla', v=['ALMA 2:15', 'ALMA 2:26', 'ALMA 2:27']),
               dict(label='Zarahemla to Gideon is "over upon the east of the river Sidon"', v=['ALMA 6:7']),
               dict(label='Melek is on the west of the Sidon', v=['ALMA 8:3']),
               dict(label='Gideon south to Manti', v=['ALMA 17:1']),
               dict(label='Raiders cross the Sidon "beyond the borders of Manti"; Zoram meets them on the east side', v=['ALMA 16:6', 'ALMA 16:7']),
               dict(label='Lamanites go round the head of the Sidon to reach Manti; Moroni waits on the west bank, Lehi on the east', v=['ALMA 43:22', 'ALMA 43:27', 'ALMA 43:32', 'ALMA 43:35', 'ALMA 43:53']),
-              dict(label='"cross the head of Sidon, over to the city of Nephihah"', v=['ALMA 56:25'])]))
+              dict(label='"cross the head of Sidon, over to the city of Nephihah"', v=['ALMA 56:25']),
+              dict(label='The strip runs "through the borders of Manti, by the head of the river Sidon"', v=['ALMA 22:27'])]))
 
     T.append(dict(
         id='D4', group='Direction', verdict='consistent',
@@ -86,14 +91,16 @@ def build_tests(ctx):
     T.append(dict(
         id='N2', group='Distance', verdict='consistent',
         title='Nephi to Zarahemla: 20 days on one route, 40 when lost',
-        summary="Alma's people took 8 days to reach Helam and 12 more to reach Zarahemla, about 20 days. Ammon's party took 40 days, but the text says they did not know the way.",
-        detail=["Mosiah 23:3 gives eight days from the area of Mormon to Helam. Mosiah 24:25 gives twelve days from Helam to Zarahemla. A route of about 20 days therefore exists; it is not stated to be the shortest.",
+        summary="Alma's people took 8 days from Mormon to Helam, 1 day to the valley of Alma, and 12 more to Zarahemla: 21 days with flocks and families. Ammon's party took 40 days, but the text says they did not know the way.",
+        detail=["Mosiah 23:3 gives eight days from Mormon to Helam. Mosiah 24:20 adds a full day to the valley of Alma, and 24:25 twelve days from there to Zarahemla. A route of about 21 days therefore exists; it is not stated to be direct (Helam was off the Lamanites' known roads, see Mosiah 23:35-37).",
+                "Supporting detail: the Lamanites who chased Limhi's people lost the trail after two days (Mosiah 22:16), wandered 'many days', and ended up at Amulon and then Helam, where they had to ask Alma 'the way which led to the land of Nephi'. Helam being hard to find from Nephi fits Alma's people fleeing 8 days into unknown country.",
                 "Mosiah 7:4-5 gives forty days for Ammon's sixteen men, with the explicit reason that they 'knew not the course'. A lost party taking twice as long as a guided one is no conflict.",
                 "Limhi's people and Mosiah's sons are both given only 'many days'. A 20-day route is a reasonable reading of 'many'.",
                 "No triangle test is possible: no pair of these places has two independent day counts."],
         rows=[dict(label='Mormon to Helam: eight days', v=['MOSIAH 23:3']),
               dict(label='First day: to the valley of Alma', v=['MOSIAH 24:20']),
               dict(label='Wilderness to Zarahemla: twelve days', v=['MOSIAH 24:25']),
+              dict(label='Pursuers lose the trail after two days; later lost and must ask the way to Nephi', v=['MOSIAH 22:16', 'MOSIAH 23:30', 'MOSIAH 23:35', 'MOSIAH 23:36']),
               dict(label="Ammon's party: forty days, lost", v=['MOSIAH 7:4', 'MOSIAH 7:5']),
               dict(label="Limhi's people and Mosiah's sons: 'many days'", v=['MOSIAH 22:13', 'ALMA 17:9'])]))
 
@@ -111,7 +118,7 @@ def build_tests(ctx):
     T.append(dict(
         id='N4', group='Distance', verdict='consistent',
         title='The Old World route has no reversals',
-        summary="Three days to a valley by a river, four days south-southeast to Shazer, many days on 'nearly the same course' to Nahom, then 'nearly eastward' to Bountiful. The headings never double back.",
+        summary="Down to the Red Sea borders, three days in the wilderness to a valley by a river that empties into the Red Sea, four days south-southeast to Shazer, many days on 'nearly the same course' to Nahom, then 'nearly eastward' to Bountiful. The headings never double back.",
         detail=["The text's own stated headings are SSE, 'nearly the same course as in the beginning', and then 'nearly eastward'. Together they describe one turn, from south-southeast to east.",
                 "The whole overland trip is given as eight years in the wilderness (1 Nephi 17:4), which is a duration and not comparable to the day counts.",
                 "I did not map this onto any real-world place, as asked."],
@@ -123,13 +130,14 @@ def build_tests(ctx):
 
     # ------------------------------------------------------------ CROSS-REFERENCE
     T.append(dict(
-        id='X1', group='Cross-reference', verdict='minor tension',
-        title='Where did the Mulekites first land?',
-        summary="Alma 22:30 says the Jaredite bones land was 'the place of their first landing', and Helaman 6:10 says the Lord brought Mulek into the land north. Omni 1:16 says they crossed the waters 'into the land where Mosiah discovered them; and they had dwelt there from that time forth'.",
-        detail=["Alma and Helaman put the first landing in the north, near Desolation. Omni reads most naturally as landing and dwelling in Zarahemla.",
-                "A reconciliation exists: Omni 1:16 may compress an unrecorded migration south. Omni 1:21 also says Coriantumr 'was discovered by the people of Zarahemla', and Alma 22:30 says the bones land was 'discovered by the people of Zarahemla', so those people were in or near the north at some point.",
-                "Nothing in the text states the migration, so this is a gap, not a contradiction."],
+        id='X1', group='Cross-reference', verdict='consistent',
+        title='Where did the Mulekites first land? The text answers it',
+        summary="Alma 22:30-31 puts their first landing in the north, in the land of the Jaredite bones, and then says 'they came from there up into the south wilderness'. Helaman 6:10 agrees ('the Lord did bring Mulek into the land north'). Omni 1:16 is a compressed summary of the same history.",
+        detail=["Correction to my first pass: I had flagged this as a minor tension and said no verse states the migration south. Alma 22:31 states it in its first clause. The 'they' follows directly from 'the people of Zarahemla... the place of their first landing', so it refers to them.",
+                "Omni 1:16 says they were brought 'into the land where Mosiah discovered them; and they had dwelt there from that time forth'. Read against Alma 22:31, 'the land' is the land in general and the dwelling is from their arrival in it, with the move south left out.",
+                "This also explains Omni 1:21: the people of Zarahemla were the ones who 'discovered' the last Jaredite, Coriantumr, which fits their having landed in the north."],
         rows=[dict(label='"the place of their first landing" (north, by Desolation)', v=['ALMA 22:30']),
+              dict(label='"they came from there up into the south wilderness"', v=['ALMA 22:31']),
               dict(label='"the Lord did bring Mulek into the land north"', v=['HELAMAN 6:10']),
               dict(label='"into the land where Mosiah discovered them; and they had dwelt there from that time forth"', v=['OMNI 1:16']),
               dict(label='Coriantumr "was discovered by the people of Zarahemla"', v=['OMNI 1:21'])]))
@@ -157,10 +165,10 @@ def build_tests(ctx):
               dict(label='Bountiful: a wilderness "filled with all manner of wild animals", some from the north', v=['ALMA 22:31'])]))
 
     T.append(dict(
-        id='X4', group='Cross-reference', verdict='minor tension',
+        id='X4', group='Cross-reference', verdict='consistent',
         title='The scouts: did they think they had found Zarahemla?',
         summary="Mosiah 8:8 says Limhi's scouts 'found not the land of Zarahemla'. Mosiah 21:26 says they found the bones land and, 'having supposed it to be the land of Zarahemla', went home.",
-        detail=["This is a location-belief inconsistency in how the two verses describe the same trip. It is reconcilable: they did not find Zarahemla, but believed the ruined land to be it, which is what Mosiah 21:26 says.",
+        detail=["On a closer reading this is not a tension. Mosiah 8:8 is Limhi speaking after Ammon has arrived, so he now knows the scouts missed Zarahemla. Mosiah 21:26 is the narrator explaining what the scouts believed at the time. Both statements are true together; I had over-flagged it in the first pass.",
                 "It also shows the scouts were lost, which fits Mosiah 21:25."],
         rows=[dict(label='"found not the land of Zarahemla"', v=['MOSIAH 8:8']),
               dict(label='"having supposed it to be the land of Zarahemla"', v=['MOSIAH 21:26'])]))
@@ -209,4 +217,80 @@ def build_tests(ctx):
         rows=[dict(label='Hill north of Shilom (Ammon pitches his tents there)', v=['MOSIAH 7:5', 'MOSIAH 7:16']),
               dict(label="Noah's tower on the hill north of Shilom; overlooks Shilom and Shemlon", v=['MOSIAH 11:12', 'MOSIAH 11:13']),
               dict(label='Lamanite host "on the south of the land of Shilom" and later "upon the north"', v=['MOSIAH 9:14', 'MOSIAH 10:8'])]))
+    T.insert(5, dict(
+        id='N0', group='Distance', verdict='note',
+        title='Every travel-time number in the text',
+        summary="The whole book gives only eleven numeric travel times. Only one pair of places, the two seas across the neck, gets two different numbers. That is why a triangle test of the kind 'A-B plus B-C versus A-C' cannot be run anywhere.",
+        detail=["I searched every verse for a number followed by 'day', 'days' or 'day's' near travel words. The list: 1 Nephi 2:6 (3 days), 16:13 (4 days), Mosiah 7:4 (40 days, lost), 22:16 (2-day pursuit), 23:3 (8 days), 24:20 (one day, 'traveled all day'), 24:25 (12 days), Alma 8:6 (3 days), Alma 22:32 (a day and a half), Helaman 4:7 (a day), Ether 6:11 (344 days at sea). Everything else is 'many days' or a duration of a battle or a stay.",
+                "Mosiah 23:3, 24:20 and 24:25 chain into one route (21 days), but no other route connects the same endpoints with a number, so there is nothing to check them against."],
+        rows=[dict(label='Old World', v=['1 NEPHI 2:6', '1 NEPHI 16:13']),
+              dict(label='Nephi to Zarahemla region', v=['MOSIAH 7:4', 'MOSIAH 22:16', 'MOSIAH 23:3', 'MOSIAH 24:20', 'MOSIAH 24:25']),
+              dict(label='Melek to Ammonihah', v=['ALMA 8:6']),
+              dict(label='Across the neck', v=['ALMA 22:32', 'HELAMAN 4:7']),
+              dict(label='Jaredite crossing', v=['ETHER 6:11'])]))
+
+    T.append(dict(
+        id='X7', group='Cross-reference', verdict='tension',
+        title='Nephihah: taken in Alma 51, or held until Alma 59?',
+        summary="Alma 51:25 says Amalickiah would not let his army go against Nephihah. The very next verse lists Nephihah first among the cities he took. Then Alma 59 has Nephihah still in Nephite hands, full of refugees, until the Lamanites take it in the thirtieth year.",
+        detail=["This is the strongest tension I found in the place references, and it is new in this pass. It involves who held a place rather than where it was, but it also touches location: 51:26 calls all six cities 'on the east borders by the seashore', while 51:25 contrasts Nephihah with the seashore and 62:25 has Lamanites flee from Nephihah 'into the land of Moroni, which was in the borders by the seashore'.",
+                "Evidence Nephihah stayed Nephite after Alma 51: refugees from Moroni gather there (51:24); in the 26th year the western Lamanites 'durst not... cross the head of Sidon, over to the city of Nephihah' (56:25); in the 29th-30th year its people are 'gathered together from the city of Moroni and the city of Lehi and the city of Morianton', Moroni expects reinforcements to 'maintain that city', and its fall grieves him (59:5-11). The book records the retaking of Mulek, Gid, Manti and others, but no retaking of Nephihah between Alma 51 and 59.",
+                "Ways to reconcile: (1) 51:26 is a loose summary of the campaign's region and 'the city of Nephihah' slipped into the list; (2) Nephihah fell and was retaken off the record. Neither is stated. I would rate this a real tension that the text does not resolve, though it is a list-level slip rather than a broken map."],
+        rows=[dict(label='Refugees flee to Nephihah; Amalickiah will not attack it, keeps to the seashore', v=['ALMA 51:24', 'ALMA 51:25']),
+              dict(label='Nephihah listed first among cities taken, "all... on the east borders by the seashore"', v=['ALMA 51:26']),
+              dict(label='Lamanites in the west "durst not" cross over to Nephihah', v=['ALMA 56:25']),
+              dict(label='Nephihah still Nephite, then attacked and lost', v=['ALMA 59:5', 'ALMA 59:7', 'ALMA 59:9', 'ALMA 59:11']),
+              dict(label='Moroni retakes it; Lamanites flee to Moroni "by the seashore"', v=['ALMA 62:18', 'ALMA 62:25', 'ALMA 62:26'])]))
+
+    T.append(dict(
+        id='X8', group='Cross-reference', verdict='consistent',
+        title="Omer's route in Ether matches Mormon's retreat, centuries apart",
+        summary="Ether 9:3 has Omer leave Moron (near Desolation), travel many days past the hill Shim, then past 'the place where the Nephites were destroyed', then east to the sea. Mormon's own retreat runs Desolation, Boaz, the hill Shim, Jordan, Cumorah: the same order.",
+        detail=["The two accounts come from different writers about different peoples. Moron is placed 'near the land which is called Desolation by the Nephites' (Ether 7:6), Mormon fights at Desolation (Mormon 3:5, 4:19), and both sequences then reach Shim before the final hill.",
+                "Mormon 2:16-17 also puts Jashon near Shim during the earlier retreat, and Mormon 2:20 then moves 'northward' to Shem. Both phases keep Shim north of the neck."],
+        rows=[dict(label='Moron is near Desolation', v=['ETHER 7:6']),
+              dict(label="Omer: many days, past Shim, past the Nephite destruction, east to Ablom", v=['ETHER 9:3']),
+              dict(label='Desolation falls; flight to Boaz', v=['MORMON 4:19', 'MORMON 4:20']),
+              dict(label='Mormon takes the records from Shim', v=['MORMON 4:23']),
+              dict(label='Jordan, then Cumorah', v=['MORMON 5:3', 'MORMON 6:2', 'MORMON 6:4'])]))
+
+    T.append(dict(
+        id='X9', group='Cross-reference', verdict='consistent',
+        title='The great destruction fits where the cities were',
+        summary="In 3 Nephi 8-9 the city of Moroni sinks 'into the depths of the sea'. Alma 50:13 had placed it 'by the east sea'. The Lamanite city Jerusalem is covered by waters; Alma 21:1 had placed it 'joining the borders of Mormon', a place of waters.",
+        detail=["The Moroni match is specific: a city founded on the coast is the one that goes into the sea. The Jerusalem match is weaker, since many cities in 3 Nephi 9 sink, but it points the same way.",
+                "Zarahemla burns rather than sinks (3 Nephi 8:8, 9:3), and it is rebuilt later (4 Nephi 1:8), which also fits."],
+        rows=[dict(label='City Moroni founded by the east sea', v=['ALMA 50:13']),
+              dict(label='Moroni sinks into the sea', v=['3 NEPHI 8:9', '3 NEPHI 9:4']),
+              dict(label='Lamanite Jerusalem joins the borders of Mormon; the waters of Mormon', v=['ALMA 21:1', 'MOSIAH 18:30']),
+              dict(label='Jerusalem covered by waters', v=['3 NEPHI 9:7']),
+              dict(label='Zarahemla burned, later rebuilt', v=['3 NEPHI 9:3', '4 NEPHI 1:8'])]))
+
+    T.append(dict(
+        id='D6', group='Direction', verdict='consistent',
+        title='One meeting, told twice, at the same spot',
+        summary="Alma 17:1 has Alma, going south from Gideon to Manti, meet the sons of Mosiah coming home. Ten chapters later Alma 27:14-16 tells the same meeting from their side: they reach the borders by the southern wilderness, go on into the land, and meet Alma 'over in the place of which has been spoken'.",
+        detail=["For the two accounts to fit, the road between Gideon and Manti must lie on the way from the southern wilderness to Zarahemla. That is exactly what the rest of the text says: Manti is at the strip by the head of the Sidon (Alma 22:27), and Gideon is south-east of Zarahemla across the river (Alma 6:7, 17:1).",
+                "The writer refers back to the earlier spot without restating it, across a long flashback."],
+        rows=[dict(label='Alma journeying southward from Gideon to Manti meets them', v=['ALMA 17:1']),
+              dict(label='They reach the southern border; Ammon goes on and meets Alma "over in the place of which has been spoken"', v=['ALMA 27:14', 'ALMA 27:16']),
+              dict(label='Alma brings them back to Zarahemla', v=['ALMA 27:20'])]))
+
+    T.append(dict(
+        id='M3', group='Naming', verdict='note',
+        title='East-coast order: Bountiful, Gid, then Mulek?',
+        summary="Helaman 5:15 has Nephi and Lehi preach at Bountiful, then Gid, then Mulek. Elsewhere Mulek is the city next to Bountiful (Alma 51:28, 52:20), so the preachers went past Mulek or took another road.",
+        detail=["Not a contradiction: travelling preachers need not go in map order, and the text never says which of Gid and Mulek is further north. I note it because Alma 51:26 lists the cities as the Lamanites took them heading north, and there Gid comes before Mulek."],
+        rows=[dict(label='Bountiful, then Gid, then Mulek', v=['HELAMAN 5:14', 'HELAMAN 5:15']),
+              dict(label='Mulek is last before Bountiful; "plains between the two cities"', v=['ALMA 51:26', 'ALMA 51:28', 'ALMA 52:20'])]))
+
+    T.append(dict(
+        id='M4', group='Naming', verdict='note',
+        title='The city of Aaron is far from Ammonihah',
+        summary="Alma 8:13 has Alma leave Ammonihah, west of the Sidon, heading for the city of Aaron. Alma 50:14 later places Nephihah between Aaron and the coastal city Moroni, which puts Aaron toward the east.",
+        detail=["Either Alma set out on a long trip across the land, or there are two places called Aaron. The text says nothing about the distance, and Alma turns back 'speedily' after the angel appears (8:18), so this cannot be tested. I list it as an open point, not a tension."],
+        rows=[dict(label='Alma heads from Ammonihah toward Aaron', v=['ALMA 8:13', 'ALMA 8:18']),
+              dict(label='Nephihah between Moroni (east sea) and Aaron', v=['ALMA 50:13', 'ALMA 50:14'])]))
+    order = {'Direction': 0, 'Distance': 1, 'Cross-reference': 2, 'Naming': 3}
+    T.sort(key=lambda t: (order[t['group']], t['id'][0] != t['group'][0], t['id']))
     return T
