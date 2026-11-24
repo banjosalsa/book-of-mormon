@@ -259,6 +259,6 @@ UPDOWN = [
  ("up","south wilderness",["ALMA 22:31","OMNI 1:27","OMNI 1:28"],"North to south is 'up': the Mulekites came 'up into the south wilderness'; settlers 'went up into the wilderness to return to the land of Nephi'"),
  ("down","Jershon",["ALMA 27:26"],"From the southern border wilderness the Ammonites 'went down into the land of Jershon'"),
  ("above","Minon",["ALMA 2:24"],"Minon is 'above the land of Zarahemla, in the course of the land of Nephi'"),
- ("up/down","Jerusalem (Old World)",["1 NEPHI 3:9","1 NEPHI 4:1","1 NEPHI 4:34","1 NEPHI 5:1","1 NEPHI 2:5"],"Old World, separate test of the same habit: always 'up' to Jerusalem and 'down' into the wilderness"),
+ ("up/down","Jerusalem (Old World)",["1 NEPHI 3:9","1 NEPHI 4:1","1 NEPHI 4:34","1 NEPHI 5:1","1 NEPHI 2:5"],"'up' to Jerusalem and 'down' into the wilderness. This follows elevation and idiom, not compass direction (the Red Sea is south of Jerusalem)"),
  ("down","Middoni",["ALMA 20:7"],"Middoni lies below Ishmael; Aaron/Ammon in Middoni are later reached 'up' from the Nephi side (ALMA 22:3)"),
 ]

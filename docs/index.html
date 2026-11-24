@@ -66,6 +66,7 @@ main{flex:1;min-height:0;position:relative}
 .tag{display:inline-block;font:500 10.5px var(--font-mono);padding:1px 6px;border-radius:9px;background:var(--accent-soft);color:var(--accent);margin-left:4px;vertical-align:1px}
 .tag.inf{background:var(--warn-soft);color:var(--warn)}
 .tag.bad{background:var(--bad-soft);color:var(--bad)}
+.cuekey{margin:6px 0 8px;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--panel);font-size:12.5px;line-height:1.9}
 .v{margin:6px 0 0;padding:6px 8px;border-left:3px solid var(--line);background:var(--bg);border-radius:0 4px 4px 0}
 .v b{font:500 12px var(--font-mono);color:var(--accent);display:block}
 .v span{font-size:13px}
@@ -131,7 +132,7 @@ main{flex:1;min-height:0;position:relative}
   #v-map.on,#v-graph.on{flex-direction:column;overflow-y:auto}
   #v-map .canvas,#v-graph .canvas{flex:none;height:72vh}
   #v-map .evid,#v-graph .evid{position:static;width:auto;box-shadow:none;border-left:0;border-top:1px solid var(--line);overflow:visible}
-  .maphint{display:none}
+  .maphint{max-width:calc(100% - 24px);font-size:10.5px;padding:3px 7px;z-index:2}
   .tl-stop{font-size:10px;padding:2px 1px}
   .tl-stop:not(.on){max-width:46px;overflow:hidden;text-overflow:ellipsis}
 }
@@ -149,8 +150,8 @@ main{flex:1;min-height:0;position:relative}
   <div class="tiles" id="tiles"></div>
 </header>
 <nav role="tablist" id="tabs">
-  <button role="tab" aria-selected="true" data-v="graph">Mind map</button>
-  <button role="tab" aria-selected="false" data-v="map">Map &amp; timeline</button>
+  <button role="tab" aria-selected="true" data-v="graph">Connections diagram</button>
+  <button role="tab" aria-selected="false" data-v="map">Approximate map &amp; timeline</button>
   <button role="tab" aria-selected="false" data-v="loc">Verses by location</button>
   <button role="tab" aria-selected="false" data-v="tests">Consistency tests</button>
   <button role="tab" aria-selected="false" data-v="about">Method</button>
@@ -158,13 +159,14 @@ main{flex:1;min-height:0;position:relative}
 <main>
   <section class="view on" id="v-graph">
     <aside class="rail" id="rail-graph"></aside>
-    <div class="canvas"><svg id="svg-graph" role="img" aria-label="Force-directed graph of places and their stated relations"></svg>
+    <div class="canvas"><div class="maphint">Places are positioned to show links, not real locations.</div><svg id="svg-graph" role="img" aria-label="Force-directed graph of places and their stated relations"></svg>
       <div class="legend" id="legend-graph"></div></div>
     <aside class="evid" id="evid-graph"><p class="hint">Click a place to see every relation and verse that involves it. Click a link to see its evidence. Drag nodes to rearrange; scroll to zoom.</p></aside>
   </section>
   <section class="view" id="v-map">
     <aside class="rail" id="rail-map"></aside>
     <div class="canvas mapc">
+      <div class="maphint">Locations are approximate and fit only what the text says about direction.</div>
       <svg id="svg-map" role="img" aria-label="Schematic map of regions, cities, rivers and seas, with an era timeline"></svg>
       <div class="timeline">
         <div class="tl-top"><button type="button" class="tl-arrow" id="tl-prev" aria-label="Previous era">‹</button><div><b id="tl-title">All eras</b> <span id="tl-when"></span></div><button type="button" class="tl-arrow" id="tl-next" aria-label="Next era">›</button></div>
@@ -234,7 +236,7 @@ function nodeEvidence(id, host){
     var det=el('details'); det.innerHTML='<summary>All '+ix.length+' verses that mention this place with a geographic cue</summary>';
     var key=el('div','hint','<span class="badge">D</span>direction <span class="badge">R</span>border/near <span class="badge">J</span>distance <span class="badge">M</span>movement');
     det.appendChild(key);
-    ix.forEach(function(p){var d=el('div','v','<b>'+esc(p[0])+' <span class="tag">'+esc(p[1])+'</span></b><span>'+esc(D.verses[p[0]]||'')+'</span>'); det.appendChild(d);});
+    ix.forEach(function(p){var d=el('div','v','<b>'+esc(p[0])+' '+cueTags(p[1])+'</b><span>'+esc(D.verses[p[0]]||'')+'</span>'); det.appendChild(d);});
     host.appendChild(det);
   }
 }
@@ -542,10 +544,21 @@ function paintMap(anim){
 }
 
 /* ---------- Verses by location ---------- */
+var CUE={d:['Direction / distance','compass direction (northward, southward) or a distance in days'],r:['Border / near','borders, nearness or adjacency'],m:['Movement','travel, going up or down, or moving between places']};
+function cueTags(code){
+  var seen={},out='';
+  ['d','r','m'].forEach(function(k){ if(String(code).toLowerCase().indexOf(k)>=0&&!seen[k]){seen[k]=1; out+='<span class="tag" title="'+CUE[k][1]+'">'+CUE[k][0]+'</span>';} });
+  return out||'<span class="tag">'+esc(code)+'</span>';
+}
+function cueKey(){
+  var k=el('div','cuekey','<b>Key:</b> '+['d','r','m'].map(function(c){return '<span class="tag">'+CUE[c][0]+'</span> '+CUE[c][1];}).join(' &nbsp;·&nbsp; ')+'. A verse can carry more than one.');
+  return k;
+}
 function buildLoc(){
   var host=document.getElementById('loc-body'); host.innerHTML='';
   host.appendChild(el('h2','','Verses by location'));
-  host.appendChild(el('p','hint','Each place lists its curated relations first, then every verse in the text that names it alongside a direction, border, distance or movement cue. Tags: D direction, R border/near, J distance, M movement.'));
+  host.appendChild(el('p','hint','Each place lists its curated relations first, then every verse in the text that names it alongside a direction, distance, border or movement cue.'));
+  host.appendChild(cueKey());
   var q=el('input'); q.type='search'; q.placeholder='Filter places…'; q.id='loc-q'; q.setAttribute('aria-label','Filter places'); q.style.cssText='width:100%;max-width:340px;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);font:inherit;margin:8px 0 4px';
   host.appendChild(q);
   var secs=[];
@@ -560,7 +573,7 @@ function buildLoc(){
       var built=false;
       d.addEventListener('toggle',function(){ if(!d.open||built) return; built=true;
         if(rels.length){inn.appendChild(el('h4','','Curated relations')); rels.forEach(function(e){inn.appendChild(relBlock(e));});}
-        if(ix.length){inn.appendChild(el('h4','','All verses naming this place with a geographic cue')); ix.forEach(function(p){inn.insertAdjacentHTML('beforeend','<div class="v"><b>'+esc(p[0])+' <span class="tag">'+esc(p[1])+'</span></b><span>'+esc(D.verses[p[0]]||'')+'</span></div>');});}
+        if(ix.length){inn.appendChild(el('h4','','All verses naming this place with a geographic cue')); ix.forEach(function(p){inn.insertAdjacentHTML('beforeend','<div class="v"><b>'+esc(p[0])+' '+cueTags(p[1])+'</b><span>'+esc(D.verses[p[0]]||'')+'</span></div>');});}
         if(!rels.length&&!ix.length) inn.appendChild(el('p','hint','No verses indexed.'));
       });
       host.appendChild(d); secs.push({d:d,h:h});

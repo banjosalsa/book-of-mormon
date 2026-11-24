@@ -6,7 +6,7 @@ A study of every direction, distance and place reference in the Book of Mormon, 
 
 - 82 places and 118 curated relations, each linked to its verses.
 - No direction loops: 22 north-south and 14 east-west statements are jointly satisfiable, and a solved layout satisfies all of them.
-- "Up" is always south and "down" always north, across about 60 verses; the Old World part keeps its own rule ("up" to Jerusalem).
+- "Up" is always toward Nephi (south) and "down" toward Zarahemla (north) across about 60 verses, so the usage is consistent. The text alone does not settle whether that means elevation, direction or both. The Old World usage ("up" to Jerusalem, "down" into the wilderness) follows elevation and idiom, not compass direction: the Red Sea is south of Jerusalem.
 - Only eleven numeric travel times exist in the whole book; only one pair of places gets two different numbers.
 - 24 tests: 18 consistent, 1 unresolved tension, 1 minor tension, 4 notes.
   - Tension: Nephihah. Alma 51:25 says Amalickiah would not attack it, 51:26 lists it among cities he took, and Alma 59 has it still Nephite until it falls in the thirtieth year.
@@ -23,7 +23,7 @@ The text gives few absolute directions and very few numbers, so passing means no
 - Constraint map: region anchors were inverted, so places without stated directions sat in the wrong half. Fixed.
 - Added: Manti on the southern strip by the head of the Sidon (Alma 22:27); the Ether/Mormon route order match; the 3 Nephi destruction check; the Gideon-Manti meeting told twice.
 
-## Map & timeline
+## Approximate map & timeline
 
 The map view draws lands as soft colored regions with cities as balls inside them, plus the river Sidon, the east and west seas, the narrow strip of wilderness and the narrow neck. Places are hand-placed in `scripts/map_data.py`; `analyze.py` checks that every stated north/south/east/west relation holds on the map and that every place sits on land. The text gives no borders, so regions are soft areas around their places, and nothing is to scale.
 
@@ -31,7 +31,7 @@ A timeline with seven stops (Jaredites, Lehi & Nephi, Mosiah & Zeniff, Alma, Cap
 
 ## Dashboard
 
-`docs/index.html` plus `docs/geo_out.json`: mind map, constraint map, verses by location, tests and method. To view locally: `cd docs && python3 -m http.server`. For GitHub Pages, serve from the `docs/` folder.
+`docs/index.html` plus `docs/geo_out.json`: connections diagram, approximate map & timeline, verses by location (with a key for the direction/distance, border and movement tags), tests and method. To view locally: `cd docs && python3 -m http.server`. For GitHub Pages, serve from the `docs/` folder.
 
 ## Rebuilding
 

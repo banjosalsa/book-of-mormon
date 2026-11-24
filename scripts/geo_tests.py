@@ -22,14 +22,16 @@ def build_tests(ctx):
 
     T.append(dict(
         id='D2', group='Direction', verdict='consistent',
-        title='"Up" and "down" are used the same way throughout',
-        summary="Across about 60 verses, travel south (toward Nephi and the southern wilderness) is always 'up' and travel north (toward Zarahemla, Jershon, Desolation) is always 'down'. The Old World part keeps its own rule just as strictly: 'up' to Jerusalem, 'down' into the wilderness. I found no reversal.",
+        title="\"Up\" and \"down\" are used consistently",
+        summary="Across about 60 verses, travel toward Nephi and the southern wilderness is always 'up', and travel toward Zarahemla, Jershon and Desolation is always 'down'. I found no reversal, so the usage is internally consistent. The Old World verses follow a separate usage: 'up' to Jerusalem and 'down' away from it into the wilderness. That Old World usage matches elevation and the Hebrew Bible idiom of going 'up' to Jerusalem, not a compass direction. The text alone does not settle whether the New World 'up/down' means elevation, direction, or both.",
         detail=["I searched every motion verb followed by 'up' or 'down' and a place name. Nephi and Zarahemla are the two best-attested endpoints, and the usage never flips.",
                 "One edge case: 3 Nephi 6:25 has a complaint 'came up unto the land of Zarahemla'. The origin is not stated, so it cannot be tested.",
                 "Mosiah 7:6 has Ammon go 'down into the land of Nephi' from the hill north of Shilom. That is a local descent into the city, so it fits.",
                 "Mormon 4:1 has the Nephites go 'up' out of Desolation toward the Lamanites, while Mormon 3:7 and 4:19 have the Lamanites 'come down' on Desolation. That pattern matches the rest: the south is higher.",
                 "The rule holds even in side remarks: Alma 22:31 has the Mulekites come 'up into the south wilderness' from the north, Alma 27:26 has the Ammonites go 'down into the land of Jershon' from the southern border, and Alma 2:24 calls Minon 'above the land of Zarahemla, in the course of the land of Nephi'.",
-                "Untestable cases: Ether 7:5 and 14:11 have armies come 'up unto the land of Moron' without saying where from."],
+                "Untestable cases: Ether 7:5 and 14:11 have armies come 'up unto the land of Moron' without saying where from.",
+                "Old World, checked against real geography: the Red Sea is south of Jerusalem, so 'came down by the borders near the shore of the Red Sea' (1 Nephi 2:5) cannot mean north. It fits elevation: Jerusalem sits in the hills at roughly 2,500 ft (750 m), and the route to the Gulf of Aqaba descends through the Judean wilderness and the Dead Sea and Arabah rift to sea level. 'Up to Jerusalem' also fits the common Hebrew idiom, which is used from any direction.",
+                "Limit: in the New World I mapped 'up' to south and 'down' to north because that is how the verses line up. A higher Nephi would explain the same pattern, so the test shows the usage never flips, not which meaning the author intended. The north-south constraints rest on explicit 'northward' and 'southward' statements. The one place that leans on elevation-style wording is the inferred relation putting Minon south of Zarahemla ('above', Alma 2:24), which is already marked inferred."],
         rows=[dict(label=f"{d} {pl}: {sense}", v=vs) for d, pl, vs, sense in ctx['UPDOWN']]))
 
     T.append(dict(
