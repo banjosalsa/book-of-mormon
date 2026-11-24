@@ -40,6 +40,13 @@ header p{margin:2px 0 0;color:var(--muted);max-width:60ch}
 .tile b{display:block;font:600 20px var(--font-display);font-variant-numeric:tabular-nums}
 .tile span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .tile.ok b{color:var(--ok)} .tile.warn b{color:var(--warn)}
+.home-link{color:inherit;text-decoration:none}.home-link:hover{text-decoration:underline}
+a.tile{color:inherit;text-decoration:none;cursor:pointer;transition:border-color .15s}a.tile:hover,a.tile:focus-visible{border-color:var(--accent)}
+.home h2{margin:24px 0 6px;font-size:20px}.home h2:first-child{margin-top:4px}.home p,.home li{line-height:1.5}.home li{margin:7px 0}.home a{color:var(--accent)}
+.gocards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:10px 0 0}
+.gocard{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer;color:var(--ink);font:inherit;line-height:1.4}
+.gocard:hover{border-color:var(--accent)}.gocard b{display:block;color:var(--accent);margin-bottom:3px;font-weight:600}
+.flash{outline:2px solid var(--accent);outline-offset:2px;transition:outline-color 1.5s}
 nav{display:flex;gap:2px;padding:0 20px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto}
 nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:500 14px var(--font-body);color:var(--muted);cursor:pointer;white-space:nowrap}
 nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
@@ -144,20 +151,22 @@ main{flex:1;min-height:0;position:relative}
 <body>
 <header>
   <div>
-    <h1>Book of Mormon geography web</h1>
+    <h1><a href="#home" data-go="home" class="home-link" title="Back to the Overview">Book of Mormon Geography Web</a></h1>
     <p>Every direction, distance and place reference in the text, linked into one graph and tested for contradictions. Built only from the text, with no outside maps.</p>
   </div>
   <div class="tiles" id="tiles"></div>
 </header>
 <nav role="tablist" id="tabs">
-  <button role="tab" aria-selected="true" data-v="graph">Connections diagram</button>
-  <button role="tab" aria-selected="false" data-v="map">Approximate map &amp; timeline</button>
-  <button role="tab" aria-selected="false" data-v="loc">Verses by location</button>
-  <button role="tab" aria-selected="false" data-v="tests">Consistency tests</button>
+  <button role="tab" aria-selected="true" data-v="home">Overview</button>
+  <button role="tab" aria-selected="false" data-v="graph">Connections Diagram</button>
+  <button role="tab" aria-selected="false" data-v="map">Approximate Map &amp; Timeline</button>
+  <button role="tab" aria-selected="false" data-v="loc">Verses by Location</button>
+  <button role="tab" aria-selected="false" data-v="tests">Consistency Tests</button>
   <button role="tab" aria-selected="false" data-v="about">Method</button>
 </nav>
 <main>
-  <section class="view on" id="v-graph">
+  <section class="view on" id="v-home"><div class="pad"><div class="wrap home" id="home-body"></div></div></section>
+  <section class="view" id="v-graph">
     <aside class="rail" id="rail-graph"></aside>
     <div class="canvas"><div class="maphint">Places are positioned to show links, not real locations.</div><svg id="svg-graph" role="img" aria-label="Force-directed graph of places and their stated relations"></svg>
       <div class="legend" id="legend-graph"></div></div>
@@ -169,7 +178,7 @@ main{flex:1;min-height:0;position:relative}
       <div class="maphint">Locations are approximate and fit only what the text says about direction.</div>
       <svg id="svg-map" role="img" aria-label="Schematic map of regions, cities, rivers and seas, with an era timeline"></svg>
       <div class="timeline">
-        <div class="tl-top"><button type="button" class="tl-arrow" id="tl-prev" aria-label="Previous era">‹</button><div><b id="tl-title">All eras</b> <span id="tl-when"></span></div><button type="button" class="tl-arrow" id="tl-next" aria-label="Next era">›</button></div>
+        <div class="tl-top"><button type="button" class="tl-arrow" id="tl-prev" aria-label="Previous era">‹</button><div><b id="tl-title">All Eras</b> <span id="tl-when"></span></div><button type="button" class="tl-arrow" id="tl-next" aria-label="Next era">›</button></div>
         <input type="range" id="tl" min="0" max="7" step="1" value="0" aria-label="Era timeline">
         <div class="tl-stops" id="tl-stops"></div>
       </div>
@@ -200,15 +209,20 @@ function edgeTitle(e){
 
 fetch('geo_out.json').then(function(r){return r.json();}).then(function(d){
   D=d; d.nodes.forEach(function(n){NODE[n.id]=n;}); EDGES=d.edges; REG=d.regions;
-  tiles(); buildGraph(); buildMap(); buildLoc(); buildTests(); buildAbout(); route();
+  tiles(); buildHome(); buildGraph(); buildMap(); buildLoc(); buildTests(); buildAbout(); route();
 }).catch(function(e){document.body.insertAdjacentHTML('beforeend','<p style="padding:20px">The data file could not be loaded: '+esc(e.message)+'</p>');});
 
 function tiles(){
   var s=D.stats, t=document.getElementById('tiles');
-  var minor=D.tests.filter(function(x){return x.verdict==='minor tension'||x.verdict==='tension';}).length;
+  var tens=D.tests.filter(function(x){return x.verdict==='minor tension'||x.verdict==='tension';});
+  var first=(D.tests.filter(function(x){return x.verdict==='tension';})[0]||tens[0]||{}).id;
   var ok=D.tests.filter(function(x){return x.verdict==='consistent';}).length;
-  [['ok',s.nodes,'places'],['ok',s.edges,'relations'],['ok',ok+'/'+D.tests.length,'tests clean'],['ok',0,'direction loops'],['warn',minor,'tensions']].forEach(function(x){
-    t.appendChild(el('div','tile '+(x[0]==='warn'?'warn':''),'<b>'+x[1]+'</b><span>'+x[2]+'</span>'));});
+  [['ok',s.nodes,'Places','loc','See every place, with its verses'],
+   ['ok',s.edges,'Relations','graph','See the relations as links between places'],
+   ['ok',ok+'/'+D.tests.length,'Tests Consistent','tests','Read the consistency tests'],
+   ['warn',tens.length,'Tensions','tests'+(first?':'+first:''),'Jump to the first tension']].forEach(function(x){
+    var a=el('a','tile '+(x[0]==='warn'?'warn':''),'<b>'+x[1]+'</b><span>'+x[2]+'</span>');
+    a.href='#'+x[3].split(':')[0]; a.setAttribute('data-go',x[3]); a.title=x[4]; t.appendChild(a);});
 }
 
 /* ---------- tabs ---------- */
@@ -218,9 +232,20 @@ function show(v){
   Array.prototype.forEach.call(tabs.children,function(b){b.setAttribute('aria-selected',String(b.dataset.v===v));});
   Array.prototype.forEach.call(document.querySelectorAll('.view'),function(s){s.classList.toggle('on',s.id==='v-'+v);});
   if(location.hash!=='#'+v) { try{history.replaceState(null,'','#'+v);}catch(x){} }
-  if(v==='graph'&&G.sim) G.sim.alpha(0.01).restart();
+  if(v==='graph'&&G.sim&&!G.fit){ var gn=document.getElementById('svg-graph'), gw=gn.clientWidth, gh=gn.clientHeight;
+    if(gw&&gh){ G.fit=true; G.sim.force('center',d3.forceCenter(gw/2,gh/2)).force('x',d3.forceX(gw/2).strength(.03)).force('y',d3.forceY(gh/2).strength(.03)); G.sim.alpha(0.9).restart(); setTimeout(fitGraph,2800); } }
+  else if(v==='graph'&&G.sim) G.sim.alpha(0.01).restart();
 }
-function route(){var h=location.hash.slice(1); if(['graph','map','loc','tests','about'].indexOf(h)>=0) show(h);}
+var VIEWS=['home','graph','map','loc','tests','about'];
+function route(){var h=location.hash.slice(1); show(VIEWS.indexOf(h)>=0?h:'home');}
+function go(spec){
+  var p=String(spec).split(':'); show(p[0]);
+  if(p[1]){ setTimeout(function(){var c=document.getElementById('t-'+p[1]); if(!c) return;
+    var d=c.querySelector('details'); if(d) d.open=true;
+    c.scrollIntoView({behavior:'smooth',block:'start'}); c.classList.add('flash'); setTimeout(function(){c.classList.remove('flash');},2200);},60); }
+  else { window.scrollTo(0,0); }
+}
+document.addEventListener('click',function(e){var a=e.target.closest('[data-go]'); if(!a) return; e.preventDefault(); go(a.getAttribute('data-go'));});
 window.addEventListener('hashchange',route);
 
 /* ---------- shared detail panel ---------- */
@@ -265,11 +290,11 @@ function railHTML(rail, state, onChange){
   });
   return rail;
 }
-var REL_TOGGLES=[['dir','Direction (N S E W)'],['adj','Borders / near'],['in','Contains'],['days','Travel time'],['route','Journeys'],['tension','Tensions']];
+var REL_TOGGLES=[['dir','Direction (N S E W)'],['adj','Borders / Near'],['in','Contains'],['days','Travel Time'],['route','Journeys'],['tension','Tensions']];
 function relGroup(e){return DIR[e.rel]?'dir':(e.rel==='group'||e.rel==='link'?'adj':e.rel);}
 function buildGraph(){
   var rail=document.getElementById('rail-graph'); railHTML(rail,G,applyGraphFilter);
-  rail.appendChild(el('h3','','Link types'));
+  rail.appendChild(el('h3','','Link Types'));
   REL_TOGGLES.forEach(function(t){
     var r=el('label','row','<input type="checkbox" checked>'+esc(t[1])); r.querySelector('input').addEventListener('change',function(ev){G.hide[t[0]]=!ev.target.checked; applyGraphFilter();}); rail.appendChild(r);
   });
@@ -278,7 +303,8 @@ function buildGraph(){
   var svg=d3.select('#svg-graph'), w=svg.node().clientWidth||800, h=svg.node().clientHeight||600;
   svg.append('defs').html('<marker id="ar" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>');
   var root=svg.append('g'); G.root=root;
-  svg.call(d3.zoom().scaleExtent([0.25,4]).on('zoom',function(ev){root.attr('transform',ev.transform);}));
+  G.zoom=d3.zoom().scaleExtent([0.25,4]).on('zoom',function(ev){root.attr('transform',ev.transform);});
+  svg.call(G.zoom);
   svg.on('click',function(ev){if(ev.target===svg.node()){G.sel=null; applyGraphFilter(); document.getElementById('evid-graph').innerHTML='<p class="hint">Click a place to see its relations and verses.</p>';}});
   var deg={}; EDGES.forEach(function(e){deg[e.a]=(deg[e.a]||0)+1; deg[e.b]=(deg[e.b]||0)+1;});
   var nodes=D.nodes.map(function(n){return {id:n.id,label:n.label,region:n.region,deg:deg[n.id]||0,x:w/2+(Math.random()-.5)*300,y:h/2+(Math.random()-.5)*300};});
@@ -302,8 +328,16 @@ function buildGraph(){
       G.linkLbl.attr('x',function(d){return (d.source.x+d.target.x)/2;}).attr('y',function(d){return (d.source.y+d.target.y)/2-3;});
       G.nodeSel.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
     });
-  document.getElementById('legend-graph').innerHTML='<span><i style="border-top-style:solid"></i>border / near</span><span><i style="border-top:2px dotted var(--edge)"></i>contains</span><span>→ direction (A is N/S/E/W of B)</span><span><i style="border-top:2px dashed var(--edge)"></i>travel time / journey</span><span><i style="border-top:2px dashed var(--bad)"></i>tension</span>';
+  document.getElementById('legend-graph').innerHTML='<span><i style="border-top-style:solid"></i>Border / Near</span><span><i style="border-top:2px dotted var(--edge)"></i>Contains</span><span>→ Direction (A is N/S/E/W of B)</span><span><i style="border-top:2px dashed var(--edge)"></i>Travel Time / Journey</span><span><i style="border-top:2px dashed var(--bad)"></i>Tension</span>';
   applyGraphFilter();
+}
+function fitGraph(){
+  var svg=d3.select('#svg-graph'), n=svg.node(), w=n.clientWidth, h=n.clientHeight; if(!w||!h||!G.zoom||!G.nodes) return;
+  function span(key){var v=G.nodes.map(function(d){return d[key];}).sort(function(a,b){return a-b;}), i=Math.floor(v.length*0.06), j=Math.ceil(v.length*0.94)-1; return [v[i],v[j]];}
+  var X=span('x'), Y=span('y'), bw=(X[1]-X[0])+120, bh=(Y[1]-Y[0])+120; if(bw<=0||bh<=0) return;
+  var k=Math.max(0.45,Math.min(1,0.95*Math.min(w/bw,h/bh)));
+  var tx=w/2-k*(X[0]+X[1])/2, ty=h/2-k*(Y[0]+Y[1])/2;
+  svg.transition().duration(600).call(G.zoom.transform,d3.zoomIdentity.translate(tx,ty).scale(k));
 }
 function styleLink(s,e){
   var c='currentColor', col=cssv('--edge'), da=null, wd=1.4, op=.8;
@@ -339,16 +373,16 @@ function buildMap(){
   var inp=el('input'); inp.type='search'; inp.id='q-map'; inp.placeholder='Search places…'; inp.setAttribute('aria-label','Search places');
   inp.addEventListener('input',function(){M.q=inp.value.toLowerCase(); paintMap(false);}); rail.appendChild(inp);
   rail.appendChild(el('h3','','Layers'));
-  [['regions','Regions'],['water','Rivers, seas, strip & neck'],['places','Cities & places'],['labels','Labels'],['journeys','Journeys (per era)'],['arrows','Stated directions (arrows)'],['inset','Old World inset']].forEach(function(t){
+  [['regions','Regions'],['water','Rivers, Seas, Strip & Neck'],['places','Cities & Places'],['labels','Labels'],['journeys','Journeys (per Era)'],['arrows','Stated Directions (Arrows)'],['inset','Old World Inset']].forEach(function(t){
     var r=el('label','row','<input type="checkbox" id="lay-'+t[0]+'" '+(M.layers[t[0]]?'checked':'')+'>'+esc(t[1]));
     r.querySelector('input').addEventListener('change',function(ev){M.layers[t[0]]=ev.target.checked; paintMap(true);}); rail.appendChild(r);
   });
-  rail.appendChild(el('h3','','Who holds the land'));
+  rail.appendChild(el('h3','','Who Holds the Land'));
   Object.keys(MP.sides).forEach(function(k){
     var bg=k==='contested'?'repeating-linear-gradient(45deg,var(--contested) 0 3px,transparent 3px 6px)':'var('+SIDE_VAR[k]+')';
     rail.appendChild(el('div','row','<i class="sw sq" style="background:'+bg+'"></i>'+esc(MP.sides[k])));
   });
-  rail.appendChild(el('p','hint','Colors by holder when an era is picked. In "All eras", regions use their group color.'));
+  rail.appendChild(el('p','hint','Colors by holder when an era is picked. In "All Eras", regions use their group color.'));
   rail.appendChild(el('h3','','Markers'));
   rail.appendChild(el('div','hint','<svg width="150" height="62" aria-hidden="true" style="color:var(--ink)"><circle cx="8" cy="9" r="5.5" fill="currentColor"/><text x="20" y="13" font-size="12" fill="currentColor">city</text><path d="M78 3.5L83.5 13.5H72.5Z" fill="currentColor"/><text x="90" y="13" font-size="12" fill="currentColor">hill</text><path d="M3 26L8 34L13 26" fill="none" stroke="currentColor" stroke-width="2"/><text x="20" y="34" font-size="12" fill="currentColor">valley</text><rect x="74" y="25" width="8" height="8" fill="currentColor"/><text x="90" y="34" font-size="12" fill="currentColor">place</text><text x="3" y="55" font-size="12" font-style="italic" fill="currentColor">Land name</text></svg>'));
 
@@ -446,14 +480,14 @@ function buildMap(){
   });
   // region membership for city coloring
   M.inReg={}; MP.regions.forEach(function(r){r.ids.forEach(function(i){(M.inReg[i]=M.inReg[i]||[]).push(r.id);}); (M.inReg[r.link]=M.inReg[r.link]||[]).push(r.id);});
-  rail.appendChild(el('h3','','About this map')); rail.appendChild(el('p','hint','North is up. Not to scale. Places were placed by hand so that all '+MP.checked+' stated north/south/east/west relations hold ('+MP.violations+' broken). The text gives no borders, so regions are soft areas around their places.'));
+  rail.appendChild(el('h3','','About This Map')); rail.appendChild(el('p','hint','North is up. Not to scale. Places were placed by hand so that all '+MP.checked+' stated north/south/east/west relations hold ('+MP.violations+' broken). The text gives no borders, so regions are soft areas around their places.'));
   buildTimeline(); paintMap(false); eraPanel();
 }
 function shortLabel(n){var o={nephi:'Nephi',promised:"Lehi's landing",hermounts:'Hermounts',cumorah:'Cumorah / Ramah',jar_landing:'Jaredite landing'}; if(o[n.id]) return o[n.id]; return n.label.replace(/ \(.*\)$/,'').replace(/^Land (of )?/,'').replace(/^Wilderness of /,'');}
 function buildTimeline(){
   var eras=D.map.eras, host=document.getElementById('tl-stops'), r=document.getElementById('tl');
   r.max=eras.length;
-  var labels=['All eras'].concat(eras.map(function(e){return e.label;}));
+  var labels=['All Eras'].concat(eras.map(function(e){return e.label;}));
   labels.forEach(function(l,i){
     var b=el('button','tl-stop',esc(l)); b.type='button'; b.style.left='calc(9px + (100% - 18px) * '+(i/eras.length)+')';
     b.addEventListener('click',function(){r.value=i; setEra(i);}); host.appendChild(b);
@@ -466,10 +500,10 @@ function setEra(i){M.era=i; M.sel=null; paintMap(true); eraPanel();}
 function eraPanel(){
   var host=document.getElementById('evid-map'), E=M.era>0?D.map.eras[M.era-1]:null; host.innerHTML='';
   Array.prototype.forEach.call(document.querySelectorAll('.tl-stop'),function(b,i){b.classList.toggle('on',i===M.era);});
-  document.getElementById('tl-title').textContent=E?E.label:'All eras';
+  document.getElementById('tl-title').textContent=E?E.label:'All Eras';
   document.getElementById('tl-when').textContent=E?E.when:'Every place at once';
   if(!E){
-    host.innerHTML='<h2>All eras</h2><p class="sub">Every place the text locates, shown together.</p><p>Drag the timeline to see the land era by era. Each stop shows only the places named in that part of the book, colors regions by who holds them, and draws the journeys and campaigns, with the verses below.</p><p class="hint">Click any region, city or feature for its relations and verses. Toggle the stated-direction arrows in the left panel to see exactly what the map is built from.</p>';
+    host.innerHTML='<h2>All Eras</h2><p class="sub">Every place the text locates, shown together.</p><p>Drag the timeline to see the land era by era. Each stop shows only the places named in that part of the book, colors regions by who holds them, and draws the journeys and campaigns, with the verses below.</p><p class="hint">Click any region, city or feature for its relations and verses. Toggle the stated-direction arrows in the left panel to see exactly what the map is built from.</p>';
     return;
   }
   host.appendChild(el('h2','',esc(E.label)));
@@ -482,14 +516,14 @@ function eraPanel(){
     d.appendChild(chips); host.appendChild(d);
   });
   if(E.paths.length){
-    host.appendChild(el('h4','eh','Journeys drawn'));
+    host.appendChild(el('h4','eh','Journeys Drawn'));
     E.paths.forEach(function(p){host.appendChild(el('div','row nb','<i class="jsw"></i>'+esc(p.label)+' <span class="hint">('+esc(p.refs.join(', '))+')</span>'));});
   }
 }
 function selectNode(id){
   M.sel=id; paintMap(false);
   var host=document.getElementById('evid-map'); nodeEvidence(id,host);
-  var back=el('button','chip back','← Back to '+(M.era>0?D.map.eras[M.era-1].label:'All eras')); back.type='button';
+  var back=el('button','chip back','← Back to '+(M.era>0?D.map.eras[M.era-1].label:'All Eras')); back.type='button';
   back.addEventListener('click',function(){M.sel=null; paintMap(false); eraPanel();});
   host.insertBefore(back,host.firstChild);
 }
@@ -543,7 +577,7 @@ function paintMap(anim){
   M.gJ.selectAll('.lbl').style('display',L.labels?null:'none');
 }
 
-/* ---------- Verses by location ---------- */
+/* ---------- Verses by Location ---------- */
 var CUE={d:['Direction / distance','compass direction (northward, southward) or a distance in days'],r:['Border / near','borders, nearness or adjacency'],m:['Movement','travel, going up or down, or moving between places']};
 function cueTags(code){
   var seen={},out='';
@@ -556,7 +590,7 @@ function cueKey(){
 }
 function buildLoc(){
   var host=document.getElementById('loc-body'); host.innerHTML='';
-  host.appendChild(el('h2','','Verses by location'));
+  host.appendChild(el('h2','','Verses by Location'));
   host.appendChild(el('p','hint','Each place lists its curated relations first, then every verse in the text that names it alongside a direction, distance, border or movement cue.'));
   host.appendChild(cueKey());
   var q=el('input'); q.type='search'; q.placeholder='Filter places…'; q.id='loc-q'; q.setAttribute('aria-label','Filter places'); q.style.cssText='width:100%;max-width:340px;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);font:inherit;margin:8px 0 4px';
@@ -572,8 +606,8 @@ function buildLoc(){
       var inn=el('div','in'); d.appendChild(inn);
       var built=false;
       d.addEventListener('toggle',function(){ if(!d.open||built) return; built=true;
-        if(rels.length){inn.appendChild(el('h4','','Curated relations')); rels.forEach(function(e){inn.appendChild(relBlock(e));});}
-        if(ix.length){inn.appendChild(el('h4','','All verses naming this place with a geographic cue')); ix.forEach(function(p){inn.insertAdjacentHTML('beforeend','<div class="v"><b>'+esc(p[0])+' '+cueTags(p[1])+'</b><span>'+esc(D.verses[p[0]]||'')+'</span></div>');});}
+        if(rels.length){inn.appendChild(el('h4','','Curated Relations')); rels.forEach(function(e){inn.appendChild(relBlock(e));});}
+        if(ix.length){inn.appendChild(el('h4','','All Verses Naming This Place with a Geographic Cue')); ix.forEach(function(p){inn.insertAdjacentHTML('beforeend','<div class="v"><b>'+esc(p[0])+' '+cueTags(p[1])+'</b><span>'+esc(D.verses[p[0]]||'')+'</span></div>');});}
         if(!rels.length&&!ix.length) inn.appendChild(el('p','hint','No verses indexed.'));
       });
       host.appendChild(d); secs.push({d:d,h:h});
@@ -585,17 +619,17 @@ function buildLoc(){
 /* ---------- Tests ---------- */
 function buildTests(){
   var host=document.getElementById('tests-body'); host.innerHTML='';
-  host.appendChild(el('h2','','Consistency tests'));
+  host.appendChild(el('h2','','Consistency Tests'));
   var c=D.tests.filter(function(t){return t.verdict==='consistent';}).length, m=D.tests.filter(function(t){return t.verdict==='minor tension';}).length, tn=D.tests.filter(function(t){return t.verdict==='tension';}).length, nt=D.tests.filter(function(t){return t.verdict==='note';}).length;
   host.appendChild(el('p','', '<b>'+c+' of '+D.tests.length+'</b> tests came out consistent. <b>'+tn+'</b> is a real tension the text leaves unresolved (Nephihah), <b>'+m+'</b> is a minor numeric tension (the width of the neck), and <b>'+nt+'</b> are notes on open points. No place is put in two incompatible positions.'));
   var last='';
   D.tests.forEach(function(t){
     if(t.group!==last){host.appendChild(el('div','grp',esc(t.group))); last=t.group;}
     var cls=t.verdict==='consistent'?'consistent':(t.verdict==='note'?'note':(t.verdict==='tension'?'tension':'minor'));
-    var card=el('div','card');
+    var card=el('div','card'); card.id='t-'+t.id;
     var top='<div class="top"><h3>'+esc(t.title)+'</h3><span class="pill '+cls+'">'+esc(t.verdict)+'</span></div><p>'+esc(t.summary)+'</p>';
     card.innerHTML=top;
-    var det=el('details'); det.innerHTML='<summary>Reasoning and evidence</summary>';
+    var det=el('details'); det.innerHTML='<summary>Reasoning and Evidence</summary>';
     t.detail.forEach(function(p){det.appendChild(el('p','',esc(p)));});
     (t.rows||[]).forEach(function(r){var b=el('div','rel','<div class="head">'+esc(r.label)+'</div>'); r.v.forEach(function(ref){b.insertAdjacentHTML('beforeend',vhtml(ref));}); det.appendChild(b);});
     card.appendChild(det); host.appendChild(card);
@@ -603,6 +637,35 @@ function buildTests(){
 }
 
 /* ---------- Method ---------- */
+function buildHome(){
+  var s=D.stats, host=document.getElementById('home-body'), T=D.tests, N=T.length;
+  var c=T.filter(function(t){return t.verdict==='consistent';}).length;
+  var tn=T.filter(function(t){return t.verdict==='tension';})[0], mn=T.filter(function(t){return t.verdict==='minor tension';})[0];
+  var link=function(id,txt){return '<a href="#tests" data-go="tests:'+id+'">'+txt+'</a>';};
+  host.innerHTML=
+   '<h2>What This Project Is</h2>'+
+   '<p>A study of every direction, distance and place reference in the Book of Mormon, linked into one web and tested for contradictions. It is built only from the text, with no outside maps, no commentary and no real-world locations.</p>'+
+   '<h2>The Question It Asks</h2>'+
+   '<p>Does the text contradict itself about where things are? For example, if one verse puts A three days from B, another puts B one day from C, and a third puts A ten days from C, those statements cannot all be true. This project collects the verses that locate places, links them into a web of '+s.nodes+' places and '+s.edges+' relations, and checks them against each other.</p>'+
+   '<h2>What the Tests Found</h2><ul>'+
+   '<li><b>Directions never go in circles.</b> The text gives '+s.ns_constraints+' north-south and '+s.ew_constraints+' east-west statements. A circular chain (A north of B, B north of C, C north of A) would be impossible, and none exists. One hand-placed map fits all of them at once.</li>'+
+   '<li><b>&ldquo;Up&rdquo; and &ldquo;down&rdquo; are used consistently.</b> Across about 60 verses, going toward Nephi is always &ldquo;up&rdquo; and going toward Zarahemla is always &ldquo;down.&rdquo; The text alone does not say whether that means elevation, direction or both.</li>'+
+   '<li><b>Travel times are scarce.</b> Only eleven numeric travel times appear in the whole book, and only one pair of places gets two different numbers.</li>'+
+   '<li><b>'+c+' of '+N+' tests came out consistent.</b> The rest are notes or the tension'+((tn&&mn)?'s':'')+' below.</li>'+
+   (tn?'<li><b>One unresolved tension:</b> '+link(tn.id,'Nephihah')+'. Alma 51 both says Amalickiah would not attack it and lists it among the cities he took, while Alma 59 has it still Nephite.</li>':'')+
+   (mn?'<li><b>One minor tension:</b> '+link(mn.id,'the width of the narrow neck')+', given as a day and a half in one verse and a day in another. They may describe two different lines.</li>':'')+
+   '</ul>'+
+   '<h2>What the Results Do Not Show</h2>'+
+   '<p>Passing a test means no contradiction was found, not that the geography is uniquely determined. The text gives few absolute directions and very few numbers. Relations were chosen by reading, so one that was overlooked would not be tested. Of the '+s.edges+' relations, '+s.explicit+' are stated outright and the rest are inferred and marked as such. Positions on the Connections Diagram and the Approximate Map are not real locations.</p>'+
+   '<h2>Explore the Project</h2><div class="gocards">'+
+   [['graph','Connections Diagram','Every place and the relations between them. Click a place or a link to see its verses.'],
+    ['map','Approximate Map & Timeline','A hand-placed sketch that fits every stated direction, with a timeline of seven eras.'],
+    ['loc','Verses by Location','Each place with the verses that name it alongside a direction, distance, border or movement cue.'],
+    ['tests','Consistency Tests','All '+N+' tests, with the evidence for each.'],
+    ['about','Method','How the relations were built, and the limits.']].map(function(x){
+      return '<button type="button" class="gocard" data-go="'+x[0]+'"><b>'+esc(x[1])+'</b>'+esc(x[2])+'</button>';}).join('')+
+   '</div>';
+}
 function buildAbout(){
   var s=D.stats, host=document.getElementById('about-body');
   host.innerHTML='<h2>Method</h2><ol class="method">'+

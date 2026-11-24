@@ -23,7 +23,7 @@ The text gives few absolute directions and very few numbers, so passing means no
 - Constraint map: region anchors were inverted, so places without stated directions sat in the wrong half. Fixed.
 - Added: Manti on the southern strip by the head of the Sidon (Alma 22:27); the Ether/Mormon route order match; the 3 Nephi destruction check; the Gideon-Manti meeting told twice.
 
-## Approximate map & timeline
+## Approximate Map & Timeline
 
 The map view draws lands as soft colored regions with cities as balls inside them, plus the river Sidon, the east and west seas, the narrow strip of wilderness and the narrow neck. Places are hand-placed in `scripts/map_data.py`; `analyze.py` checks that every stated north/south/east/west relation holds on the map and that every place sits on land. The text gives no borders, so regions are soft areas around their places, and nothing is to scale.
 
@@ -31,7 +31,7 @@ A timeline with seven stops (Jaredites, Lehi & Nephi, Mosiah & Zeniff, Alma, Cap
 
 ## Dashboard
 
-`docs/index.html` plus `docs/geo_out.json`: connections diagram, approximate map & timeline, verses by location (with a key for the direction/distance, border and movement tags), tests and method. To view locally: `cd docs && python3 -m http.server`. For GitHub Pages, serve from the `docs/` folder.
+`docs/index.html` plus `docs/geo_out.json`: an Overview landing page (the page title links back to it), the Connections Diagram, the Approximate Map & Timeline, Verses by Location (with a key for the direction/distance, border and movement tags), Consistency Tests and Method. The four cards in the header link to the matching tab; the Tensions card jumps to the first tension test. To view locally: `cd docs && python3 -m http.server`. For GitHub Pages, serve from the `docs/` folder.
 
 ## Rebuilding
 

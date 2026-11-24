@@ -114,7 +114,7 @@ REGIONS = [
 ]
 
 SIDES = {'nephite':'Nephite', 'lamanite':'Lamanite', 'jaredite':'Jaredite', 'mulekite':'People of Zarahemla',
-         'contested':'Changing hands', 'wild':'Wilderness / unsettled', 'lost':'Destroyed or abandoned'}
+         'contested':'Changing Hands', 'wild':'Wilderness / Unsettled', 'lost':'Destroyed or Abandoned'}
 
 # Each era: which places appear, who holds what, what happens (with verses), and journeys to draw.
 # M_north / M_south tint the two halves of the landmass.

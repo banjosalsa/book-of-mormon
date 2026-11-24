@@ -11,14 +11,14 @@
 #   tension  : a spot where two statements pull against each other
 
 REGIONS = {
-    "ow":     ("Old World & voyage",            "#7a6a9a"),
-    "nephi":  ("Land of Nephi cluster",         "#b5651d"),
+    "ow":     ("Old World & Voyage",            "#7a6a9a"),
+    "nephi":  ("Land of Nephi Cluster",         "#b5651d"),
     "zar":    ("Zarahemla & the Sidon",         "#2a7f62"),
-    "east":   ("East coast",                    "#2c6fb0"),
-    "west":   ("West / south-west frontier",    "#9b4d7c"),
-    "north":  ("Bountiful, neck & land northward", "#c0392b"),
-    "mormon": ("Mormon-era sites",              "#6b7f2a"),
-    "jared":  ("Jaredite lands",                "#8a6d1b"),
+    "east":   ("East Coast",                    "#2c6fb0"),
+    "west":   ("West / South-West Frontier",    "#9b4d7c"),
+    "north":  ("Bountiful, Neck & Land Northward", "#c0392b"),
+    "mormon": ("Mormon-Era Sites",              "#6b7f2a"),
+    "jared":  ("Jaredite Lands",                "#8a6d1b"),
 }
 
 # id, label, region, kind
